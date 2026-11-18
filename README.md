@@ -4,6 +4,12 @@
 
 A collection of skills and plugins for everyday development.
 
+## Reusable agent rules
+
+The [agent delivery rules](AGENTS.md) apply in this repository and can be reused in other projects. They cover acceptance criteria, testing the actual deliverable, investigating related defects, and verifying batches before handoff.
+
+To adopt them in another repository, copy `AGENTS.md` to its root. If it already has an instructions file, merge the relevant sections and keep its project-specific commands and constraints. For an agent that reads a different instructions file, reference these rules from that entry point or merge them there. The rules work without pstack or a separately installed skill.
+
 ## Skills
 
 | Skill | What it does |
