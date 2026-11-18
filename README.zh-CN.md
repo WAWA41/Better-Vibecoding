@@ -13,12 +13,6 @@
 
 在其他仓库复用时，将规则合并到目标项目的 `AGENTS.md`，把 `.agents/playbooks/`、`.agents/references/` 和 `vendor/pstack/` 按相同相对位置复制过去，保留可执行权限。
 
-### 三种工具如何找到这些规则
-
-- **Codex** 会沿仓库根目录到当前工作目录的路径读取项目指令。对于原生技能，它先看到名称和描述，选中后才读取完整说明。本仓库的专题指南是普通 Markdown，根文件写明遇到什么情况时应打开它们。[项目指令](https://learn.chatgpt.com/docs/agent-configuration/agents-md) · [技能](https://learn.chatgpt.com/docs/build-skills)
-- **Cursor Agent** 可以直接读取共享的 `AGENTS.md`。如果以后某类文件需要专门规则，例如数据库迁移脚本，可以在 `.cursor/rules/*.mdc` 中配置文件匹配条件，让相关文件进入上下文时自动带上规则。Cursor 也支持让 Agent 根据描述选择规则。[Cursor 规则](https://cursor.com/docs/rules)
-- **Claude Code** 从 v2.1.277 起支持直接读取 `AGENTS.md`。默认配置下，当前目录及其父目录都没有项目级或本地 Claude 指令文件时，它才回退到这个入口。已有项目 `CLAUDE.md` 时，可在其中单独写一行 `@AGENTS.md`，共用根规则。Claude 会在读取指令文件时展开导入，因此专题指南保留为带触发条件的普通链接。[Claude Code 项目指令](https://code.claude.com/docs/en/memory)
-
 接入或升级后，在仓库根目录运行：
 
 ```sh

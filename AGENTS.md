@@ -1,6 +1,6 @@
 # Delivery rules
 
-Honor the user's goal, corrections, and scope. Check the deliverable through its normal entry point. Report what you delivered, what you observed, and any material verification gap.
+Stay within the user's scope. Check the requested outcomes, including later corrections, through the deliverable's normal entry point. Before handoff, rerun checks that subsequent edits could have invalidated. Report what you delivered, what you observed, and any material verification gap.
 
 ## When to use a workflow
 
