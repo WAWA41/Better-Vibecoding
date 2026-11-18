@@ -1,17 +1,19 @@
 # Better-Vibecoding
 
-这里收集日常开发中整理的技能和插件。
+[简体中文](README.zh-CN.md)
 
-## 技能
+A collection of skills and plugins for everyday development.
 
-| 技能 | 用途 |
+## Skills
+
+| Skill | What it does |
 | --- | --- |
-| [auto-chat](skills/auto-chat/SKILL.md) | 让 Codex 桌面端判断一条需求该留在当前聊天还是另开聊天。切换时，新的聊天会收到项目状态、用户纠正和验收条件。 |
+| [auto-chat](skills/auto-chat/SKILL.md) | Helps Codex desktop decide when to start a new chat. The receiving chat gets the project state, relevant user corrections, and acceptance criteria. |
 
-### 安装和使用 auto-chat
+### Install and use auto-chat
 
-将仓库中的 `skills/auto-chat` 整个目录复制到 Codex 的个人技能目录。默认安装后的路径为 `~/.codex/skills/auto-chat/SKILL.md`。如果设置了 `CODEX_HOME`，使用该目录下的 `skills/auto-chat/`。
+Copy the `skills/auto-chat` directory into your personal Codex skills directory. The default installed path is `~/.codex/skills/auto-chat/SKILL.md`. If you set `CODEX_HOME`, use the `skills/auto-chat/` directory underneath it.
 
-在项目聊天里说“后续需求由你判断，合适时直接新建聊天并交接”即可启用。也可以输入 `$auto-chat` 并附上同样的要求。希望在所有项目中默认启用时，把这句话写入自己的 Codex 全局规则，并注明适用于每个新聊天。
+In a project chat, say “When a new request would fit better in a separate chat, create one and hand it over.” You can also mention `$auto-chat` with the same request. To enable it for every project and new chat, add that instruction and its scope to your own global Codex rules.
 
-同一问题的追问和修正留在原聊天。遇到可独立验收的新需求时，Codex 会在能够访问原工作目录的条件下创建新聊天并交接。临时想留在原处时，说“这次留在这里”即可。
+Corrections and follow-ups stay in the current chat. A request with its own deliverable and acceptance criteria can move to a new chat that has access to the same working directory. Say “keep this one here” to override that decision.

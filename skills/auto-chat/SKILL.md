@@ -1,22 +1,42 @@
 ---
 name: auto-chat
-description: 在 Codex 桌面端为长期项目自动分聊。用户要求自动判断何时新开会话、开启或关闭自动分聊、在用户规则已启用自动分聊的项目中接收需求，或恢复由本技能交接的任务时使用。
+description: Route work between Codex desktop chats when the user asks for automatic chat handoffs, a standing user rule enables them, or a new chat receives a handoff. Also use when the user asks to evaluate or disable automatic handoffs.
 ---
 
-# 自动分聊
+# Auto-chat
 
-**启用范围。** 从用户当前请求及已加载的个人或项目规则确认分聊授权与范围。用户在全局规则中明确要求各项目、新聊天默认分聊时，直接按该规则判断。仅在当前聊天授权时，范围默认覆盖本聊天及它交接出的后续聊天。记录授权来源与原意。只问用法或只要求评估时，给判断即可。只启用而未给任务时，说明已启用，等下一条真实需求。用户随时可以说“这次留在这里”或“关闭自动分聊”。尊重最新指令。只有用户明确要求写成项目规则时才更新项目的 AGENTS.md。
+## Decide where the request belongs
 
-**每次收到需求时判断。** 新聊天收到首个独立任务时，就在这里开始。 延续同一验收目标、补充约束、纠正上一版或仍在定位同一故障，就在当前聊天继续。新的需求有独立交付物和可单独验证的完成条件，且所需背景能从项目和下述记录恢复时，才值得新开。一个长期任务也可在前一阶段已验证、下一阶段有独立验收条件时切换。聊天长度本身不足以决定切换。仍有运行中的写入、未移交的进程或只能在当前交互中继续的操作时，先在原处推进到安全边界。决定留下时直接做事。
+Read the user's request and applicable personal or project rules. Record the source and scope of explicit permission to create chats. A global instruction can cover every project and new chat. Permission given in one chat covers that chat and its successors unless the user specifies a different scope. Honor later instructions such as “keep this one here” or “turn off automatic handoffs.” Update a project's `AGENTS.md` only when the user asks to save a project rule.
 
-**保存可以核对的上下文。** 分聊前把这次任务的用户原话、后续修正、验收条件、明确排除的范围写进同一份记录。区分用户决定与 agent 的推测。带上项目/工作树绝对路径、分支与可用的 HEAD、相关未提交改动、关键入口、已验证的结果、待办及第一步。只摘录影响这次工作的历史纠正，标清适用范围、已取代的旧决定和出处（原聊天与消息线索、项目规则或验证产物）。沿用上一份记录中仍适用的决定。尚未接受的建议保留为待定。略去凭据和无关会话。
+If the user asks for advice, give a routing decision. If they enable the skill without a task, acknowledge it and wait for a request. Start the first task of a fresh chat there. Keep follow-ups, corrections, new constraints on the same deliverable, and investigation of the same failure together.
 
-默认使用项目工作区内的 `.auto-chat/handoffs/<新 UUID>/resume.md`，一项交接独占一个目录。仅在需要切换时创建。把必须原样保留的小型附件放在同一目录，或引用双方都能读取的原件。写完后回读内容，计算记录和每个附件的 SHA-256（PowerShell 用 `Get-FileHash -LiteralPath`），将绝对路径和哈希写入新聊天首条消息。后续交接创建新记录。交接材料留在本机，排除在本次代码提交之外。
+Consider a new chat when the next request has its own deliverable and acceptance criteria, or when a verified phase ends and the next phase can be checked independently. Chat length alone is insufficient. Finish any active write or reach a point where the next chat can take over the running work. Continue in the current chat if the receiver would lose access to essential state or the working directory.
 
-如果当前 Git 项目已在使用 pstack 检查点，且能从已加载的 pstack 技能定位其 Resume storage 说明和工具，可以沿用其 begin、publish、read 流程。确认发布回执指向本次分配的目录，并固定本次记录和附件的路径及哈希。其他任务可能改写 latest。pstack 缺失、不可用或无法定位本次回执时，使用上述工作区文件。两种方式都要求接手方能核验同一份记录并访问原工作目录；缺少这个条件时，在原聊天推进。
+## Save the handoff
 
-**把任务交给新聊天。** 在 Codex 桌面查找 `list_projects`、`create_thread`、`list_threads` 和 `wait_threads`。遵守工具对显式新建请求的要求，仅在用户对这项任务或当前范围明确授权“合适时新建聊天”时执行。用 `list_projects` 匹配原项目和工作树，选择同一项目的 local 环境。projectless 仅在能够核实接手方对原目录有相应访问权限时使用。保留原聊天。创建前核对这次检查点是否已经派给另一聊天；结果不明时先查同项目聊天并核对任务和记录路径，避免重试产生两个执行者。
+Create `.auto-chat/handoffs/<new UUID>/resume.md` in the project workspace only when handing work over. Give each handoff its own directory. Record:
 
-给新聊天一条可直接执行的首条消息：写明这是接手任务、用户目标和验收条件、原目录、固定记录与附件的路径及哈希、后续分聊授权的原话和范围。注明“本次是接手，直接核对并执行；下一条新需求才重新判断是否分聊”。保存返回的聊天标识与对应的固定记录路径。返回 threadId 和 hostId 时，用这对标识观察接手情况，并按桌面规范给出新聊天入口。仅有 clientThreadId 时，用桌面规范的待创建入口，等 list_threads 能定位真实 threadId 后再查询；等待和读取工具需要真实 threadId。创建进行中或接收状态未知时，保留交接记录，暂停原聊天对同一任务的写入。用 `wait_threads` 或 `read_thread` 查看接手方实际回报的目标、关键纠正和第一步。若只看见派发消息，将状态写为等待接手。创建明确失败且无接手方时，在原聊天继续并说明原因。
+- The user's request in their own words, later corrections, acceptance criteria, and scope exclusions.
+- Applicable decisions from earlier work, their scope and sources, and any older decisions they supersede. Identify assumptions and unresolved proposals separately.
+- The absolute project or worktree path, branch and HEAD when available, relevant uncommitted edits, key files, verified results, remaining work, and the first action for the receiver.
 
-**接手端。** 先检查指定记录和附件的 SHA-256，读取项目规则，核对实际目录、分支、相关改动及本次验收条件。对照实际文件、测试或运行结果，分清已完成与待办。若发现多个交接记录，以首条消息中校验通过的那一份为准。具体记录损坏或项目状态有实质冲突时回查已标明的来源，只有无法解决且影响本次工作时才询问用户。报告接手的目标及第一步，直接执行并验证。把仍有效的授权和纠正带到下一次交接。
+Include only relevant history. Leave out credentials and unrelated chats. Put small attachments that must remain unchanged beside the note, or reference originals both chats can read. Read the note back and calculate SHA-256 for the note and each attachment. On PowerShell, use `Get-FileHash -LiteralPath`. Keep handoff materials local and out of the task's commits.
+
+If the project already uses pstack checkpoints and its Resume storage instructions and tools are available, you can use its begin, publish, and read workflow. Verify that the published receipt identifies this handoff's directory. Pin the exact file paths and hashes because another task can advance the latest pointer. Use the workspace note if the checkpoint tooling or receipt is unavailable.
+
+## Create the chat and confirm pickup
+
+Use the Codex desktop thread tools only within the user's explicit authorization. Use `list_projects` to match the project and worktree, then `create_thread` with the same project's local environment. Use a projectless target only when the receiver's access to the original directory can be verified. Keep the source chat available.
+
+Before dispatching, check whether this handoff has already been assigned. If creation times out or its outcome is unclear, use `list_threads` and inspect candidate chats for the exact handoff path before retrying. While creation or pickup is uncertain, pause writes to the same task in the source chat. If creation definitively failed and no receiver exists, continue locally and report the failure.
+
+In the first message, include the goal, acceptance criteria, original directory, pinned absolute paths and hashes, and the user's permission and its scope. Tell the receiver to verify the handoff and start work there. Reconsider routing only on the next new request.
+
+Record the returned identifiers alongside the handoff path and show the desktop chat entry to the user. With a `threadId` and `hostId`, use `wait_threads` or `read_thread` to observe pickup. If only a `clientThreadId` is available, show the pending entry and resolve the actual thread ID before reading or waiting. The outbound message alone means pickup is still pending. Confirm pickup from the receiver's account of the goal, relevant corrections, and first action.
+
+## Receive the handoff
+
+Verify the named note and attachments against their SHA-256 hashes. Read the project rules and compare the actual worktree, branch, changes, and acceptance criteria with the note. Use files, tests, or runtime results to distinguish completed work from open tasks. If another checkpoint is newer, follow the verified record named in the opening message.
+
+Resolve material discrepancies from the cited sources. Ask the user only when a discrepancy affects the work and the evidence cannot resolve it. Report the inherited goal and first action, then perform and verify the task. Carry applicable corrections and authorization into any later handoff.
