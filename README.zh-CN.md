@@ -4,27 +4,33 @@
 
 这里收集日常开发中整理的技能和插件。
 
-## 通用交付规则
+## 架构与交付规则
 
-[Agent 交付规则](AGENTS.md) 在本仓库内使用，也可以复用到其他项目。规则涵盖如何约定验收结果、验证实际交付物、排查同类缺陷，以及在批量交付前验证代表性成品。
+用支持 [AGENTS.md](AGENTS.md) 的 agent 打开本仓库，照常描述任务即可。普通克隆就包含 [pstack 入口](vendor/pstack/plugins/pstack/skills/poteto-mode/SKILL.md)、校验工具和以下项目流程：
 
-要在其他仓库启用，将 `AGENTS.md` 复制到仓库根目录。已有指令文件时，合并适用章节，保留原有的项目命令与约束。如果所用 agent 读取其他指令文件，可从它的入口引用这份规则，或将相应章节合并进去。规则可以独立使用，无需安装 pstack 或额外的 skill。
+- [功能开发](.agents/playbooks/feature-delivery.md)先追踪真实调用，用 `architect` 确定共享边界，交付前检查是否仍有多处各自决定同一业务规则，以及哪些旧路径可以清理。
+- [缺陷修复](.agents/playbooks/bug-fix-delivery.md)先复现并定位规则归属。如果两次修复依赖同一假设，且都没通过同一项检查，第三次改代码前先直接验证该假设。需要调整结构时，保住调用方依赖的行为，迁移后清理旧实现。
 
-## 在仓库中使用 pstack
+在其他仓库复用时，将规则合并到目标项目的指令文件，把 `.agents/playbooks/` 和 `vendor/pstack/` 按相同相对位置复制过去，保留可执行权限。如果所用 agent 读取其他指令文件，可从它的入口引用 `AGENTS.md`。
 
-本仓库包含两份 pstack 原生项目流程。[功能开发流程](.agents/playbooks/feature-delivery.md)在规划时确定验收结果，交付前检查实际成品。[缺陷修复流程](.agents/playbooks/bug-fix-delivery.md)检查共用同一根因的入口和产物，并在交付版本上重跑最初的复现步骤。
+接入或升级后，在仓库根目录运行：
 
-1. 每个 Codex 环境只需安装一次 pstack。尚未安装时，按[上游安装说明](https://github.com/h00mankind/pstack#install)在终端执行：
+```sh
+node vendor/pstack/plugins/pstack/skills/poteto-mode/scripts/check-playbooks.mjs .
+```
 
-   ```sh
-   codex plugin marketplace add h00mankind/pstack
-   codex plugin add pstack@pstack
-   ```
+校验器检查项目流程与上游步骤是否匹配。实际成品仍通过项目自身的正常入口验证。固定的上游提交和许可证见[来源记录](vendor/pstack/UPSTREAM.md)。
 
-2. 要接入其他仓库，将根目录 `AGENTS.md` 的规则合并到目标仓库，把这两份流程文件复制到目标仓库的 `.agents/playbooks/`，再一起提交。当前仓库已经包含这两部分。
-3. 在 Codex 中打开目标仓库，用 `$pstack:poteto-mode` 提交功能需求或缺陷报告。可以在任务计划中查看针对交付成品的验收步骤，或针对同类缺陷的排查步骤。
+### 可选：注册 Codex 原生插件
 
-pstack 升级后，在仓库根目录运行 `node "<pstack-plugin-dir>/skills/poteto-mode/scripts/check-playbooks.mjs" .`，将占位符替换为本机插件目录。该命令检查项目流程与上游步骤是否仍然匹配。实际成品由项目自身的验收操作验证。
+如需在尚未安装插件的机器上使用原生技能菜单，可以注册本仓库的[插件目录](.agents/plugins/marketplace.json)：
+
+```sh
+codex plugin marketplace add WAWA41/Better-Vibecoding
+codex plugin add pstack@better-vibecoding
+```
+
+启动钩子遵循宿主的信任设置。仓库指令可独立生效，工具、模型与权限由 agent 运行环境提供。
 
 ## 技能
 

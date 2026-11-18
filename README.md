@@ -4,27 +4,33 @@
 
 A collection of skills and plugins for everyday development.
 
-## Reusable agent rules
+## Architecture and delivery rules
 
-The [agent delivery rules](AGENTS.md) apply in this repository and can be reused in other projects. They cover acceptance criteria, testing the actual deliverable, investigating related defects, and verifying batches before handoff.
+Open this checkout in an agent that reads [AGENTS.md](AGENTS.md) and describe the task normally. A plain clone includes the [pstack entry point](vendor/pstack/plugins/pstack/skills/poteto-mode/SKILL.md), the playbook checker, and these project extensions:
 
-To adopt them in another repository, copy `AGENTS.md` to its root. If it already has an instructions file, merge the relevant sections and keep its project-specific commands and constraints. For an agent that reads a different instructions file, reference these rules from that entry point or merge them there. The rules work without pstack or a separately installed skill.
+- The [feature workflow](.agents/playbooks/feature-delivery.md) traces a real caller and uses `architect` to settle shared boundaries. Before delivery, it checks for competing business rules and obsolete paths.
+- The [bug-fix workflow](.agents/playbooks/bug-fix-delivery.md) reproduces the defect and identifies its owner. If two fixes based on the same assumption fail the same check, it tests that assumption before another patch. Structural repairs preserve caller contracts and retire superseded implementations.
 
-## Use pstack in a repository
+To adopt the integration elsewhere, merge the rules into the target project's instructions and copy `.agents/playbooks/` and `vendor/pstack/` into the same relative locations. Preserve executable file modes. Agents with a different instruction entry point can reference `AGENTS.md` there.
 
-Better-Vibecoding includes two native pstack project playbooks. The [feature playbook](.agents/playbooks/feature-delivery.md) adds acceptance checks to planning and verification. The [bug-fix playbook](.agents/playbooks/bug-fix-delivery.md) checks for the same defect in related outputs and reruns the original reproduction on the delivered version.
+Run the compatibility check from the repository root after adoption or an upgrade:
 
-1. Install the pstack plugin once per Codex environment if needed. The [upstream installation guide](https://github.com/h00mankind/pstack#install) lists both Codex CLI commands:
+```sh
+node vendor/pstack/plugins/pstack/skills/poteto-mode/scripts/check-playbooks.mjs .
+```
 
-   ```sh
-   codex plugin marketplace add h00mankind/pstack
-   codex plugin add pstack@pstack
-   ```
+The checker verifies upstream step references. Validate the delivered behavior through the project's usual entry points. The [source record](vendor/pstack/UPSTREAM.md) identifies the pinned upstream revision and licenses.
 
-2. To adopt this integration elsewhere, merge the root `AGENTS.md` and copy the two playbook files to `.agents/playbooks/` in the target repository. Commit them alongside its existing instructions. This checkout already includes both parts.
-3. Open the repository in Codex and invoke `$pstack:poteto-mode` with a feature request or bug report. In the task plan, look for the acceptance check on the deliverable or the check for other affected outputs.
+### Optional native Codex plugin
 
-After updating pstack, run `node "<pstack-plugin-dir>/skills/poteto-mode/scripts/check-playbooks.mjs" .` from the repository root. Replace the placeholder with the installed plugin directory. The checker verifies that the extensions still match the upstream steps. Run the product's own checks to verify the deliverable.
+To expose pstack in the native skill menu on a machine without the plugin, use this repository's [marketplace](.agents/plugins/marketplace.json):
+
+```sh
+codex plugin marketplace add WAWA41/Better-Vibecoding
+codex plugin add pstack@better-vibecoding
+```
+
+Startup hooks use the host's trust settings. Repository instructions work independently of those hooks. Tool availability, model access, and permissions depend on the host.
 
 ## Skills
 

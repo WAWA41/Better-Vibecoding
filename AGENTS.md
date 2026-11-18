@@ -2,7 +2,15 @@
 
 Apply these rules when producing or fixing a deliverable. For an explanation or review, deliver the requested answer or findings. Use the project's existing tools and conventions. Keep the checks proportional to the change.
 
-When pstack is available, use `poteto-mode` for nontrivial feature work and bug fixes. Apply the matching project playbook from `.agents/playbooks/` when present. The delivery rules below also apply when running a task directly.
+For nontrivial features and bug fixes, load the [bundled poteto-mode](vendor/pstack/plugins/pstack/skills/poteto-mode/SKILL.md) before editing. Follow its runtime mapping and the matching [feature](.agents/playbooks/feature-delivery.md) or [bug-fix](.agents/playbooks/bug-fix-delivery.md) extension. Resolve bundled skills and scripts relative to this checkout, including when the host has no pstack plugin installed. Use the tools and permissions available in the current session. Keep a contained, obvious change local and verify it directly.
+
+## Architecture and recurring defects
+
+- Trace a real caller through the affected path. Identify the owner of mutable state, the module responsible for each business decision, and the consumers that rely on its behavior. Look at an existing implementation of the same concept before adding another one.
+- For changes to a shared interface, state ownership, or persisted format, use [architect](vendor/pstack/plugins/pstack/skills/architect/SKILL.md) before implementation. Sketch the boundary, its callers, and compatibility obligations. Keep one authority for the same business decision. Introduce an abstraction when it removes concrete duplication, coupling, or an invalid state; similar-looking code can serve different policies.
+- When two attempted fixes based on the same assumption fail the same check, use [Attack the Premise](vendor/pstack/plugins/pstack/skills/principle-attack-the-premise/SKILL.md) before trying a third. State the shared assumption and run a probe whose outcome could disprove it. Locate the first divergence from expected behavior and fix the supported cause.
+- If a structural repair is warranted, use the [refactoring playbook](vendor/pstack/plugins/pstack/skills/poteto-mode/playbooks/refactoring.md) to pin behavior that callers rely on. Migrate affected internal callers and remove superseded paths. Isolate required compatibility for external callers or existing data at the boundary.
+- During review, trace a representative caller again. Ask where the next change to this rule would go and which old paths still implement it. Resolve competing authorities and stale workarounds in scope. Document a significant tradeoff or a remaining compatibility constraint when it affects the next maintainer.
 
 ## Define what done looks like
 
