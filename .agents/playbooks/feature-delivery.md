@@ -1,9 +1,8 @@
 ---
 extends: feature
-when: A feature adds or changes behavior that someone will use.
+when: A feature changes a shared contract, state owner, or persisted format, or ships a batch through a shared process.
 ---
 
-- **In** "parallel design exploration" follow the [architecture rules](../../AGENTS.md#architecture-and-recurring-defects). Trace one real caller and sketch ownership, affected contracts, and how existing callers or data will migrate when the boundary changes.
-- **Before** "Write the throughput checkpoint" identify the deliverable and the user-visible outcome from [the repository delivery rules](../../AGENTS.md). For a batch, choose one representative result to verify before repeating the work.
-- **Before** "Rebase into small, ordered commits" check where the next change to the same business decision would go. Remove superseded internal paths; record why any external compatibility path still exists.
-- **In** "Verify on the matching surface" exercise the actual deliverable through its normal entry point. Record the action, the observed result, and any relevant state that remains unchecked. Include that evidence in the feature handoff.
+- **In** "parallel design exploration" trace a real caller to the state or policy it depends on. For a shared contract change, identify affected consumers, including readers of existing data, and decide how they will migrate. Give each business rule a clear owner; add an abstraction when it removes concrete duplication or coupling.
+- **In** "Write the throughput checkpoint" plan an end-to-end check of one representative deliverable before scaling up a batch. Give each subsequent item a lightweight check that distinguishes the intended output from a stale or template build. Repeat the full check if the shared delivery process changes.
+- **In** "Verify on the matching surface" exercise the affected user journey and any adjacent state the change put at risk. For a visual change, use an accepted design as a reference when available. For a migrated contract, check for competing implementations; retire superseded paths and keep compatibility that existing callers or data still need.

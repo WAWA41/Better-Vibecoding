@@ -6,7 +6,7 @@ A collection of skills and plugins for everyday development.
 
 ## Architecture and delivery rules
 
-Open this checkout in an agent that reads [AGENTS.md](AGENTS.md) and describe the task normally. A plain clone includes the [pstack entry point](vendor/pstack/plugins/pstack/skills/poteto-mode/SKILL.md), the playbook checker, and these project extensions:
+Open this checkout in an agent that reads [AGENTS.md](AGENTS.md) and describe the task normally. A clear local change goes straight to implementation and verification. For work that needs a deeper workflow, the checkout includes [pstack](vendor/pstack/plugins/pstack/skills/poteto-mode/SKILL.md) and these project extensions:
 
 - The [feature workflow](.agents/playbooks/feature-delivery.md) traces a real caller and uses `architect` to settle shared boundaries. Before delivery, it checks for competing business rules and obsolete paths.
 - The [bug-fix workflow](.agents/playbooks/bug-fix-delivery.md) reproduces the defect and identifies its owner. If two fixes based on the same assumption fail the same check, it tests that assumption before another patch. Structural repairs preserve caller contracts and retire superseded implementations.

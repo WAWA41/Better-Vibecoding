@@ -6,7 +6,7 @@
 
 ## 架构与交付规则
 
-用支持 [AGENTS.md](AGENTS.md) 的 agent 打开本仓库，照常描述任务即可。普通克隆就包含 [pstack 入口](vendor/pstack/plugins/pstack/skills/poteto-mode/SKILL.md)、校验工具和以下项目流程：
+用支持 [AGENTS.md](AGENTS.md) 的 agent 打开本仓库，照常描述任务即可。明确的局部修改可以直接完成并验证。需要深入设计或排错时，仓库自带的 [pstack](vendor/pstack/plugins/pstack/skills/poteto-mode/SKILL.md) 和以下流程可按需使用。
 
 - [功能开发](.agents/playbooks/feature-delivery.md)先追踪真实调用，用 `architect` 确定共享边界，交付前检查是否仍有多处各自决定同一业务规则，以及哪些旧路径可以清理。
 - [缺陷修复](.agents/playbooks/bug-fix-delivery.md)先复现并定位规则归属。如果两次修复依赖同一假设，且都没通过同一项检查，第三次改代码前先直接验证该假设。需要调整结构时，保住调用方依赖的行为，迁移后清理旧实现。
