@@ -2,6 +2,8 @@
 
 Apply these rules when producing or fixing a deliverable. For an explanation or review, deliver the requested answer or findings. Use the project's existing tools and conventions. Keep the checks proportional to the change.
 
+When pstack is available, use `poteto-mode` for nontrivial feature work and bug fixes. Apply the matching project playbook from `.agents/playbooks/` when present. The delivery rules below also apply when running a task directly.
+
 ## Define what done looks like
 
 - Identify who will use the result, what they will receive, and one observable outcome that would satisfy their request. Carry forward the user's corrections and relevant constraints. For a small change, one sentence is enough.
