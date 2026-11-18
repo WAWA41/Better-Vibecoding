@@ -11,7 +11,13 @@ Open this checkout in an agent that reads [AGENTS.md](AGENTS.md) and describe th
 - The [feature workflow](.agents/playbooks/feature-delivery.md) opens the [shared contract guide](.agents/references/shared-contracts.md) for changes such as migrating a saved setting. A batch of exports calls for the [batch delivery guide](.agents/references/batch-delivery.md). Both apply if the task involves both risks.
 - The [bug-fix workflow](.agents/playbooks/bug-fix-delivery.md) starts with the reproduction. If two fixes based on the same assumption fail the same check, test the assumption before another patch. Open the structural repair guidance when the confirmed cause calls for it.
 
-To adopt the integration elsewhere, merge the rules into the target project's instructions and copy `.agents/playbooks/`, `.agents/references/`, and `vendor/pstack/` into the same relative locations. Preserve executable file modes. Agents with a different instruction entry point can reference `AGENTS.md` there.
+To adopt the integration elsewhere, merge the rules into the target project's `AGENTS.md` and copy `.agents/playbooks/`, `.agents/references/`, and `vendor/pstack/` into the same relative locations. Preserve executable file modes.
+
+### How each agent finds the rules
+
+- **Codex** reads project instructions along the path from the repository root to its working directory. For native skills it sees the name and description first, then reads the full instructions when it selects a skill. Here, the root file gives the agent conditions for opening ordinary Markdown guides. [Project instructions](https://learn.chatgpt.com/docs/agent-configuration/agents-md) · [Skills](https://learn.chatgpt.com/docs/build-skills)
+- **Cursor Agent** reads the shared `AGENTS.md` directly. If a project later needs a rule for a file family, such as database migrations, a `.cursor/rules/*.mdc` rule can attach when a matching file enters context. Cursor also supports selecting rules by description. [Cursor rules](https://cursor.com/docs/rules)
+- **Claude Code** can read `AGENTS.md` directly from v2.1.277. With default settings it falls back to that file when the working directory and its ancestors have no project or local Claude instruction file. If the project already uses `CLAUDE.md`, add `@AGENTS.md` on its own line there to share the root instructions. Keep the detailed guides as conditional links because Claude expands imports when it reads the instruction file. [Claude Code project instructions](https://code.claude.com/docs/en/memory)
 
 Run the compatibility check from the repository root after adoption or an upgrade:
 
