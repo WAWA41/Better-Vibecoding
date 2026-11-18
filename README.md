@@ -6,12 +6,12 @@ A collection of skills and plugins for everyday development.
 
 ## Architecture and delivery rules
 
-Open this checkout in an agent that reads [AGENTS.md](AGENTS.md) and describe the task normally. A clear local change goes straight to implementation and verification. For work that needs a deeper workflow, the checkout includes [pstack](vendor/pstack/plugins/pstack/skills/poteto-mode/SKILL.md) and these project extensions:
+Open this checkout in an agent that reads [AGENTS.md](AGENTS.md) and describe the task normally. The project rules use progressive disclosure. A button label edit can go straight to the rendered button for verification. When a change has wider consequences, the agent uses the matching project workflow with bundled pstack.
 
-- The [feature workflow](.agents/playbooks/feature-delivery.md) traces a real caller and uses `architect` to settle shared boundaries. Before delivery, it checks for competing business rules and obsolete paths.
-- The [bug-fix workflow](.agents/playbooks/bug-fix-delivery.md) reproduces the defect and identifies its owner. If two fixes based on the same assumption fail the same check, it tests that assumption before another patch. Structural repairs preserve caller contracts and retire superseded implementations.
+- The [feature workflow](.agents/playbooks/feature-delivery.md) opens the [shared contract guide](.agents/references/shared-contracts.md) for changes such as migrating a saved setting. A batch of exports calls for the [batch delivery guide](.agents/references/batch-delivery.md). Both apply if the task involves both risks.
+- The [bug-fix workflow](.agents/playbooks/bug-fix-delivery.md) starts with the reproduction. If two fixes based on the same assumption fail the same check, test the assumption before another patch. Open the structural repair guidance when the confirmed cause calls for it.
 
-To adopt the integration elsewhere, merge the rules into the target project's instructions and copy `.agents/playbooks/` and `vendor/pstack/` into the same relative locations. Preserve executable file modes. Agents with a different instruction entry point can reference `AGENTS.md` there.
+To adopt the integration elsewhere, merge the rules into the target project's instructions and copy `.agents/playbooks/`, `.agents/references/`, and `vendor/pstack/` into the same relative locations. Preserve executable file modes. Agents with a different instruction entry point can reference `AGENTS.md` there.
 
 Run the compatibility check from the repository root after adoption or an upgrade:
 
@@ -30,7 +30,12 @@ codex plugin marketplace add WAWA41/Better-Vibecoding
 codex plugin add pstack@better-vibecoding
 ```
 
-Startup hooks use the host's trust settings. Repository instructions work independently of those hooks. Tool availability, model access, and permissions depend on the host.
+An enabled native plugin can also inject its own routing instructions at session start, subject to the host's trust settings. Repository instructions work independently of those hooks. Tool availability, model access, and permissions depend on the host.
+
+### Design references
+
+- Cloudflare routes a task such as storing uploads to the relevant product guide. [Cloudflare Skills](https://github.com/cloudflare/skills/blob/main/skills/cloudflare/SKILL.md)
+- Superpowers links from a specific debugging symptom, a failure deep in the call stack, to a separate tracing technique. [Systematic Debugging](https://github.com/obra/superpowers/blob/main/skills/systematic-debugging/SKILL.md)
 
 ## Skills
 

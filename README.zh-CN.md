@@ -6,12 +6,12 @@
 
 ## 架构与交付规则
 
-用支持 [AGENTS.md](AGENTS.md) 的 agent 打开本仓库，照常描述任务即可。明确的局部修改可以直接完成并验证。需要深入设计或排错时，仓库自带的 [pstack](vendor/pstack/plugins/pstack/skills/poteto-mode/SKILL.md) 和以下流程可按需使用。
+用支持 [AGENTS.md](AGENTS.md) 的 agent 打开本仓库，照常描述任务即可。项目规则采用渐进式披露。改一句按钮文案，可以改完直接看实际按钮。改动牵涉其他调用方或交付环节时，agent 才进入对应的项目流程，并使用仓库自带的 pstack。
 
-- [功能开发](.agents/playbooks/feature-delivery.md)先追踪真实调用，用 `architect` 确定共享边界，交付前检查是否仍有多处各自决定同一业务规则，以及哪些旧路径可以清理。
-- [缺陷修复](.agents/playbooks/bug-fix-delivery.md)先复现并定位规则归属。如果两次修复依赖同一假设，且都没通过同一项检查，第三次改代码前先直接验证该假设。需要调整结构时，保住调用方依赖的行为，迁移后清理旧实现。
+- [功能开发流程](.agents/playbooks/feature-delivery.md)按风险指向具体说明。比如迁移已保存的设置时，读[共享接口与数据兼容](.agents/references/shared-contracts.md)；批量导出文件时，读[批量交付验收](.agents/references/batch-delivery.md)。两种风险同时存在时，两份都适用。
+- [缺陷修复流程](.agents/playbooks/bug-fix-delivery.md)从复现开始。如果两次修复基于同一假设，又都没通过同一项检查，第三次修改前先直接检验假设。定位到的根因确实需要调整结构时，再读重构说明。
 
-在其他仓库复用时，将规则合并到目标项目的指令文件，把 `.agents/playbooks/` 和 `vendor/pstack/` 按相同相对位置复制过去，保留可执行权限。如果所用 agent 读取其他指令文件，可从它的入口引用 `AGENTS.md`。
+在其他仓库复用时，将规则合并到目标项目的指令文件，把 `.agents/playbooks/`、`.agents/references/` 和 `vendor/pstack/` 按相同相对位置复制过去，保留可执行权限。如果所用 agent 读取其他指令文件，可从它的入口引用 `AGENTS.md`。
 
 接入或升级后，在仓库根目录运行：
 
@@ -30,7 +30,12 @@ codex plugin marketplace add WAWA41/Better-Vibecoding
 codex plugin add pstack@better-vibecoding
 ```
 
-启动钩子遵循宿主的信任设置。仓库指令可独立生效，工具、模型与权限由 agent 运行环境提供。
+启用原生插件后，插件还可以在会话启动时注入自己的路由提示，具体取决于宿主的信任设置。仓库指令可独立生效，工具、模型与权限由 agent 运行环境提供。
+
+### 设计参考
+
+- Cloudflare 按任务选择产品文档。例如，需要保存上传文件时，入口会指向 R2 指南。[Cloudflare Skills](https://github.com/cloudflare/skills/blob/main/skills/cloudflare/SKILL.md)
+- Superpowers 按排错时观察到的现象补充方法。例如，错误出现在调用栈深处时，才引出反向追踪根因的说明。[Systematic Debugging](https://github.com/obra/superpowers/blob/main/skills/systematic-debugging/SKILL.md)
 
 ## 技能
 

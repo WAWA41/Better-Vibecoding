@@ -1,11 +1,11 @@
 # Delivery rules
 
-Honor the user's goal, corrections, and scope. Choose an approach that fits the change. For a deliverable, use its normal entry point and check the outcome the user cares about. At handoff, identify the artifact, the result you observed, and any material gap in verification.
+Honor the user's goal, corrections, and scope. Check the deliverable through its normal entry point. Report what you delivered, what you observed, and any material verification gap.
 
 ## When to use a workflow
 
-- Handle a well-understood, local change directly. For example, verify a button label on the rendered button.
+- Handle a well-understood local change directly. For a label edit, check the rendered button.
 - For a feature that changes shared interfaces, state ownership, or stored data, or delivers a batch through a shared process, use the [feature workflow](.agents/playbooks/feature-delivery.md).
 - For a defect with an unknown cause, repeated failed fixes, or other consumers likely to be affected, use the [bug-fix workflow](.agents/playbooks/bug-fix-delivery.md).
 
-For a routed task, follow [the bundled pstack instructions](vendor/pstack/plugins/pstack/skills/poteto-mode/SKILL.md) and the matching project workflow. For other work, use your judgment about which tools and checks will help.
+When a workflow applies, use it with [bundled pstack](vendor/pstack/plugins/pstack/skills/poteto-mode/SKILL.md). Open a linked guide when its condition arises. Revisit this choice if the work reveals a wider change.
