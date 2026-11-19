@@ -4,4 +4,4 @@ description: generate a project-local skill that formally verifies one high-risk
 disable-model-invocation: true
 ---
 
-Invoke the `create-formal-verification-skill` skill and follow it.
+Invoke the `better-vibecoding:create-formal-verification-skill` skill and follow it.

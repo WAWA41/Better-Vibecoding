@@ -4,4 +4,4 @@ description: run both thermo-nuclear reviews as parallel subagents and synthesiz
 disable-model-invocation: true
 ---
 
-Invoke the `thermos` skill and follow it.
+Invoke the `better-vibecoding:thermos` skill and follow it.

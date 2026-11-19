@@ -8,10 +8,10 @@ A collection of skills and plugins for everyday development.
 
 Open this checkout in an agent that reads [AGENTS.md](AGENTS.md) and describe the task normally. The project rules use progressive disclosure. A button label edit can go straight to the rendered button for verification. When a change has wider consequences, the agent uses the matching project workflow with the Better Vibecoding plugin.
 
-- The [feature workflow](.agents/playbooks/feature-delivery.md) opens the [shared contract guide](.agents/references/shared-contracts.md) for changes such as migrating a saved setting. A batch of exports calls for the [batch delivery guide](.agents/references/batch-delivery.md). Both apply if the task involves both risks.
-- The [bug-fix workflow](.agents/playbooks/bug-fix-delivery.md) starts with the reproduction. If two fixes based on the same assumption fail the same check, test the assumption before another patch. Open the structural repair guidance when the confirmed cause calls for it.
+- The [feature workflow](plugins/better-vibecoding/.agents/playbooks/feature-delivery.md) opens the [shared contract guide](plugins/better-vibecoding/.agents/references/shared-contracts.md) for changes such as migrating a saved setting. A batch of exports calls for the [batch delivery guide](plugins/better-vibecoding/.agents/references/batch-delivery.md). Both apply if the task involves both risks.
+- The [bug-fix workflow](plugins/better-vibecoding/.agents/playbooks/bug-fix-delivery.md) starts with the reproduction. If two fixes based on the same assumption fail the same check, test the assumption before another patch. Open the structural repair guidance when the confirmed cause calls for it.
 
-To adopt the integration elsewhere, merge the rules into the target project's `AGENTS.md` and copy `.agents/playbooks/`, `.agents/references/`, and `plugins/better-vibecoding/` into the same relative locations. Preserve executable file modes.
+To adopt the integration elsewhere, merge the rules into the target project's `AGENTS.md` and copy `plugins/better-vibecoding/` into the same relative location. Preserve executable file modes.
 
 Run the compatibility check from the repository root after adoption or an upgrade:
 

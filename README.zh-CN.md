@@ -8,10 +8,10 @@
 
 用支持 [AGENTS.md](AGENTS.md) 的 agent 打开本仓库，照常描述任务即可。项目规则采用渐进式披露。改一句按钮文案，可以改完直接看实际按钮。改动牵涉其他调用方或交付环节时，agent 才进入对应的项目流程，并使用仓库自行维护的 Better Vibecoding 插件。
 
-- [功能开发流程](.agents/playbooks/feature-delivery.md)按风险指向具体说明。比如迁移已保存的设置时，读[共享接口与数据兼容](.agents/references/shared-contracts.md)；批量导出文件时，读[批量交付验收](.agents/references/batch-delivery.md)。两种风险同时存在时，两份都适用。
-- [缺陷修复流程](.agents/playbooks/bug-fix-delivery.md)从复现开始。如果两次修复基于同一假设，又都没通过同一项检查，第三次修改前先直接检验假设。定位到的根因确实需要调整结构时，再读重构说明。
+- [功能开发流程](plugins/better-vibecoding/.agents/playbooks/feature-delivery.md)按风险指向具体说明。比如迁移已保存的设置时，读[共享接口与数据兼容](plugins/better-vibecoding/.agents/references/shared-contracts.md)；批量导出文件时，读[批量交付验收](plugins/better-vibecoding/.agents/references/batch-delivery.md)。两种风险同时存在时，两份都适用。
+- [缺陷修复流程](plugins/better-vibecoding/.agents/playbooks/bug-fix-delivery.md)从复现开始。如果两次修复基于同一假设，又都没通过同一项检查，第三次修改前先直接检验假设。定位到的根因确实需要调整结构时，再读重构说明。
 
-在其他仓库复用时，将规则合并到目标项目的 `AGENTS.md`，把 `.agents/playbooks/`、`.agents/references/` 和 `plugins/better-vibecoding/` 按相同相对位置复制过去，保留可执行权限。
+在其他仓库复用时，将规则合并到目标项目的 `AGENTS.md`，把 `plugins/better-vibecoding/` 按相同相对位置复制过去，保留可执行权限。
 
 接入或升级后，在仓库根目录运行：
 

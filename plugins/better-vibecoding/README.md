@@ -1,6 +1,6 @@
 # Better Vibecoding
 
-WAWA41 maintains this plugin in `plugins/better-vibecoding/`. Edit a skill's `SKILL.md` here to change how it works. The shared workflow entry is [poteto-mode](skills/poteto-mode/SKILL.md). Its [playbooks](skills/poteto-mode/playbooks) define the steps for design, debugging, review, and delivery. An adopting project can extend those steps under `.agents/playbooks/`.
+WAWA41 maintains this plugin in `plugins/better-vibecoding/`. Edit a skill's `SKILL.md` here to change how it works. The shared workflow entry is [poteto-mode](skills/poteto-mode/SKILL.md). Its [base playbooks](skills/poteto-mode/playbooks) define the steps for design, debugging, review, and delivery. The [delivery workflows](.agents/playbooks) and their [guides](.agents/references) ship with every install. A consuming repository can extend the base steps in its own `.agents/playbooks/`.
 
 ## Install and invoke
 

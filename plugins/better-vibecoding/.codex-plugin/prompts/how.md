@@ -4,4 +4,4 @@ description: walk through how a subsystem works
 disable-model-invocation: true
 ---
 
-Invoke the `how` skill and follow it.
+Invoke the `better-vibecoding:how` skill and follow it.

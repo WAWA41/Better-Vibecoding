@@ -5,6 +5,7 @@ import process from "node:process";
 import { fileURLToPath } from "node:url";
 
 const BUNDLED = resolve(dirname(fileURLToPath(import.meta.url)), "../playbooks");
+const PLUGIN_ROOT = resolve(BUNDLED, "../../..");
 const CHANGE = /^\s*(?:[-*]|\d+\.)\s+\*\*(?:After|Before|Replace|In)\*\*\s+"([^"]+)"/;
 const CHANGE_VERB = /^\s*(?:[-*]|\d+\.)\s+\*\*(?:After|Before|Replace|In)\*\*/;
 const flat = (text) => text.replace(/\s+/g, " ");
@@ -56,16 +57,16 @@ function invokedDirectly() {
 
 if (invokedDirectly()) {
   const root = resolve(process.argv[2] ?? ".");
-  const directory = join(root, ".agents/playbooks");
-  const problems = statSync(root, { throwIfNoEntry: false })?.isDirectory()
-    ? checkPlaybooks(root)
-    : [`${root} is not a directory`];
+  const problems = checkPlaybooks(PLUGIN_ROOT).map((message) => `Plugin: ${message}`);
+  for (const file of ["feature-delivery.md", "bug-fix-delivery.md"]) {
+    if (!existsSync(join(PLUGIN_ROOT, ".agents/playbooks", file))) problems.push(`Missing plugin workflow: ${file}`);
+  }
+  if (!statSync(root, { throwIfNoEntry: false })?.isDirectory()) problems.push(`${root} is not a directory`);
+  else if (root !== PLUGIN_ROOT) problems.push(...checkPlaybooks(root));
   if (problems.length > 0) {
     console.error(problems.join("\n"));
     process.exitCode = 1;
-  } else if (existsSync(directory)) {
-    console.log("Every project playbook matches this plugin's playbooks.");
   } else {
-    console.log(`No project playbooks to check: ${directory} does not exist.`);
+    console.log("The bundled delivery workflows and any project playbooks match the installed playbook steps.");
   }
 }

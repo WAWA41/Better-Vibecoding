@@ -4,4 +4,4 @@ description: get the `/ketchup` catch-up as a short silent video of slides, with
 disable-model-invocation: true
 ---
 
-Invoke the `ketchup-video` skill and follow it. Resolve Claude tool names, Claude model names, and Claude built-in skills through `poteto-mode/references/codex-tools.md`, including its Per-skill notes.
+Invoke the `better-vibecoding:ketchup-video` skill and follow it. Resolve Claude tool names, Claude model names, and Claude built-in skills through `poteto-mode/references/codex-tools.md`, including its Per-skill notes.

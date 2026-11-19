@@ -4,4 +4,4 @@ description: answer a question about Better Vibecoding with the prompt to send a
 disable-model-invocation: true
 ---
 
-Invoke the `poteto-help` skill and follow it. Resolve Claude tool names, Claude model names, and Claude built-in skills through `poteto-mode/references/codex-tools.md`, including its Per-skill notes.
+Invoke the `better-vibecoding:poteto-help` skill and follow it. Resolve Claude tool names, Claude model names, and Claude built-in skills through `poteto-mode/references/codex-tools.md`, including its Per-skill notes.
