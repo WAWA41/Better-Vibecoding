@@ -30,7 +30,7 @@ codex plugin marketplace add WAWA41/Better-Vibecoding
 codex plugin add better-vibecoding@better-vibecoding
 ```
 
-Already registered this marketplace? Run `codex plugin marketplace upgrade better-vibecoding` before installing the new plugin ID. To carry over model settings, copy `pstack-models.md` to `better-vibecoding-models.md` in the same runtime configuration directory. Update saved skill mentions to `better-vibecoding:<skill>`. If the old plugin is enabled, disable its routing hook to avoid duplicate instructions.
+Already registered this marketplace? Run `codex plugin marketplace upgrade better-vibecoding` before installing the new plugin ID. To carry over model settings, copy `pstack-models.md` to `better-vibecoding-models.md` in the same runtime configuration directory and update any explicit imports of that file. Update saved skill mentions to `better-vibecoding:<skill>`. If the old plugin is enabled, disable its routing hook to avoid duplicate instructions.
 
 An enabled native plugin can also inject its own routing instructions at session start, subject to the host's trust settings. Repository instructions work independently of those hooks. Tool availability, model access, and permissions depend on the host.
 

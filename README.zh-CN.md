@@ -30,7 +30,7 @@ codex plugin marketplace add WAWA41/Better-Vibecoding
 codex plugin add better-vibecoding@better-vibecoding
 ```
 
-已注册过这个插件目录的用户，可先运行 `codex plugin marketplace upgrade better-vibecoding` 刷新目录，再安装新标识的插件。要沿用模型设置，可在同一配置目录把 `pstack-models.md` 复制为 `better-vibecoding-models.md`。将已有指令里的技能引用改成 `better-vibecoding:<技能名>`。两个插件同时启用时，可关闭旧插件的启动路由，避免重复注入。
+已注册过这个插件目录的用户，可先运行 `codex plugin marketplace upgrade better-vibecoding` 刷新目录，再安装新标识的插件。要沿用模型设置，可在同一配置目录把 `pstack-models.md` 复制为 `better-vibecoding-models.md`，并更新指向旧配置文件的显式引用。将已有指令里的技能引用改成 `better-vibecoding:<技能名>`。两个插件同时启用时，可关闭旧插件的启动路由，避免重复注入。
 
 启用原生插件后，插件还可以在会话启动时注入自己的路由提示，具体取决于宿主的信任设置。仓库指令可独立生效，工具、模型与权限由 agent 运行环境提供。
 
