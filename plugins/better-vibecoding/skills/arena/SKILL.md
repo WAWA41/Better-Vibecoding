@@ -54,11 +54,13 @@ One synthesized artifact, with a short synthesis note alongside naming the base 
 
 ## Models
 
-Role defaults, stamped from `plugins/pstack/models.json` (edit there, rerun `tools/generate.mjs`). A matching role line in the `better-vibecoding-models.md` override sheet overrides each at runtime; `/setup-pstack` writes it and lists its path per runtime.
+Your runtime's model override sheet takes precedence. See the [bundled model configuration](../setup-pstack/SKILL.md#models) for maintenance instructions.
 
+<!-- BEGIN GENERATED role defaults -->
 - arena runners: `opus`, `fable`, `sonnet`, `haiku`
 - arena cross-judge pool: `opus`, `fable`, `sonnet`, `haiku`
+<!-- END GENERATED role defaults -->
 
 ## Reasoning effort
 
-A role value in the override sheet may name a reasoning effort after its model, as in `opus @xhigh`. Levels on Claude Code: `low`, `medium`, `high`, `xhigh`, `max`. Which ones apply depends on the model. A value without `@` takes the sheet's `default effort` line, a level or `session`, and `session` when the sheet has no such line. On Claude Code, `session` sets no effort. On other runtimes, follow the platform mapping for `session`. Strip the suffix before reading the model: `inherit-parent` or `auto` still omits `model` at every level, and a model name is passed as `model`. Pass the level as the dispatch's effort field and keep the `subagent_type` you would otherwise use. That is `effort` on the Claude Code `Agent` call and `reasoning_effort` on Codex's `spawn_agent`. On Muse it is `effort` on a Workflow child; a `subagent_spawn` dispatch keeps the session's effort.
+A role value in the override sheet may name a reasoning effort after its model, as in `<model> @<level>`. See the [reasoning effort levels](../setup-pstack/SKILL.md#models) for Claude Code. Which ones apply depends on the model. A value without `@` takes the sheet's `default effort` line, a level or `session`, and `session` when the sheet has no such line. On Claude Code, `session` sets no effort. On other runtimes, follow the platform mapping for `session`. Strip the suffix before reading the model: `inherit-parent` or `auto` still omits `model` at every level, and a model name is passed as `model`. Pass the level as the dispatch's effort field and keep the `subagent_type` you would otherwise use. That is `effort` on the Claude Code `Agent` call and `reasoning_effort` on Codex's `spawn_agent`. On Muse it is `effort` on a Workflow child; a `subagent_spawn` dispatch keeps the session's effort.

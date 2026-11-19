@@ -10,7 +10,7 @@ function sheet_roles(roles, panel,    n) {
   split("", roles)
   split("", panel)
   n = 0
-  # Stamped from plugins/pstack/models.json; edit there and rerun tools/generate.mjs.
+  # BEGIN GENERATED sheet metadata
   roles[++n] = "feature, refactoring"
   roles[++n] = "bug-fix"
   roles[++n] = "perf-issue"
@@ -40,6 +40,7 @@ function sheet_roles(roles, panel,    n) {
   SHEET_EFFORT["high"] = 1
   SHEET_EFFORT["xhigh"] = 1
   SHEET_EFFORT["max"] = 1
+  # END GENERATED sheet metadata
   return n
 }
 

@@ -35,7 +35,7 @@ Enumerate the model names the `Agent` tool's `model` parameter accepts in this s
 
 ### 2. Load current state
 
-The default role-to-model mapping is the rule shape shown in the Write the override sheet step below. If the current runtime's sheet already exists, read it and treat its values as the current choices. Otherwise start from those defaults. A line whose role is not in that shape, such as `how critics`, is from a retired role. Drop it. An older sheet may name full model IDs that start with `claude-`, which the `Agent` tool rejects. Replace each with its family name, the word after `claude-`.
+If the current runtime's sheet exists, use its saved values as the current choices. For roles without a saved value, use the defaults for the current runtime. The [Claude Code example](#6-write-the-override-sheet) shows the role names and Claude Code defaults. On Codex, read `../../models.json` relative to this skill. For each role in `roles`, take the value of its `models` key from the `codex` object. Offer that model or panel only if every entry is available in this session. Ask for a choice when an entry is unavailable. A line whose role is not in that shape, such as `how critics`, is from a retired role. Drop it. An older sheet may name full model IDs that start with `claude-`, which the `Agent` tool rejects. Replace each with its family name, the word after `claude-`.
 
 ### 3. Map and confirm
 
@@ -55,13 +55,16 @@ Every real slug written must be in the detected set. `inherit-parent` and `auto`
 
 ### 6. Write the override sheet
 
-Write the current runtime's sheet with the shape below. Overwrite the whole file so re-runs stay idempotent.
+Write the current runtime's sheet with the heading and rows below. The model values shown are Claude Code defaults. Use the current runtime's choices from step 3. Overwrite the whole file so re-runs stay idempotent.
 
 ```markdown
 # Better Vibecoding model configuration
 
-Per-role model overrides for Better Vibecoding skills. Each Better Vibecoding SKILL.md names its defaults in a Models section; the values here override those defaults. Delete a line to fall back to the skill default. A value of `inherit-parent` or `auto` runs that role on the parent session's model (the `Agent` call omits `model`); an alias entry in a panel list still counts toward that panel's fan-out. A model may carry a reasoning effort, as in `opus @xhigh` (levels: low, medium, high, xhigh, max); the role's subagent then runs at that level, each entry of a panel list on its own. `default effort` sets the level for a value without one; `session` uses the runtime's platform mapping to start from the parent session's effort. On Codex this requires active-turn metadata or an explicit effort choice. In a T3 Code thread, a value of the form `<providerInstanceId>/<model>` runs through T3's `delegate_task` tool and not the harness's own subagent tool, as the Better Vibecoding plugin's `poteto-mode/references/t3-tools.md` describes, and `fast mode: off` makes each `delegate_task` call turn the provider's fast mode off, where `provider` passes no fast-mode option. `session hook: off` stops the Claude Code, Codex, or Muse SessionStart hook, or the Better Vibecoding Pi extension, from injecting the poteto-mode mandate; any other value, or no line, leaves it on.
+Per-role model overrides for Better Vibecoding skills. Each Better Vibecoding SKILL.md names its defaults in a Models section; the values here override those defaults. Delete a line to fall back to the skill default. A value of `inherit-parent` or `auto` runs that role on the parent session's model (the `Agent` call omits `model`); an alias entry in a panel list still counts toward that panel's fan-out. A model may carry a reasoning effort, as in `<model> @<level>`; the role's subagent then runs at that level, each entry of a panel list on its own. `default effort` sets the level for a value without one; `session` uses the runtime's platform mapping to start from the parent session's effort. On Codex this requires active-turn metadata or an explicit effort choice. In a T3 Code thread, a value of the form `<providerInstanceId>/<model>` runs through T3's `delegate_task` tool and not the harness's own subagent tool, as the Better Vibecoding plugin's `poteto-mode/references/t3-tools.md` describes, and `fast mode: off` makes each `delegate_task` call turn the provider's fast mode off, where `provider` passes no fast-mode option. `session hook: off` stops the Claude Code, Codex, or Muse SessionStart hook, or the Better Vibecoding Pi extension, from injecting the poteto-mode mandate; any other value, or no line, leaves it on.
+```
 
+<!-- BEGIN GENERATED Claude sheet defaults -->
+```text
 feature, refactoring: sonnet
 bug-fix: opus
 perf-issue: opus
@@ -87,6 +90,7 @@ default effort: session
 fast mode: off
 session hook: on
 ```
+<!-- END GENERATED Claude sheet defaults -->
 
 ### 7. Wire it in
 
@@ -125,10 +129,12 @@ The role lines are the same everywhere. What differs is the sheet path, how the 
 
 ## Models
 
-Stamped from `plugins/pstack/models.json` (edit there, rerun `tools/generate.mjs`).
+Edit `plugins/better-vibecoding/models.json` and run `node plugins/better-vibecoding/scripts/sync-model-defaults.mjs` from the repository root. Add `--check` to report stale files without updating them.
 
+<!-- BEGIN GENERATED Claude model catalog -->
 - Available Claude models: `opus`, `fable`, `sonnet`, `haiku`
 - Default panel: `opus`, `fable`, `sonnet`, `haiku`
 - Reasoning effort levels: `low`, `medium`, `high`, `xhigh`, `max`
-- Default reasoning effort: `session`
+- Default reasoning effort for a new sheet: `session`
 - Single-role default: `opus`
+<!-- END GENERATED Claude model catalog -->

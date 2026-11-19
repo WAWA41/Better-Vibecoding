@@ -41,12 +41,7 @@ poteto-mode's Subagents section sets Claude-specific defaults (`subagent_type: "
 
 ## Model names
 
-Skills name Claude defaults (a single-role default for code/prose/judgment, a worker model for feature and refactoring code, plus a diverse-model panel for diverse-model panels; each model-consuming skill lists its own in a Models section). These slugs do not resolve on Muse. Substitute your configured Muse models:
-
-- Single-model roles: your primary Muse model (for example `muse-wonder-1.0`).
-- Roles that default to the Claude worker model (`feature, refactoring`): your fast Muse model (for example `muse-spark-1.3`).
-- Roles that default to the strongest Claude model (`strongest judgment`): your strongest Muse model (for example `muse-wonder-full-1.0`).
-- Diverse-model panels (`arena`, `architect`, `interrogate`, `how` critics, `reflect`): the adversarial signal comes from model diversity, so use the distinct Muse models available to you. A good default panel is `muse-wonder-full-1.0`, `muse-wonder-1.0`, `muse-spark-1.3`. Muse serves one model family, so vary reasoning effort across the panel too and note in the verdict that diversity was reduced.
+Read the `muse` object in [models.json](../../../models.json) for Muse's bundled model tiers. For a role without an override, find its `models` key in `roles` and use the model or panel with that key in `muse`. Muse serves one model family. Vary reasoning effort across the panel and report the reduced model diversity.
 
 Pass a role's model where the dispatch takes one: a Workflow child's `model`, or the session model when the dispatch has no model field. `subagent_spawn` takes an agent definition, not a model, so a role dispatched that way runs on the session's model and effort; a Workflow child takes both (see Subagent policy). `inherit-parent` or `auto` omits `model`.
 

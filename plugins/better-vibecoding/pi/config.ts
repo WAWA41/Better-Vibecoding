@@ -106,7 +106,7 @@ export function readSheet(agentDir: string): Sheet | undefined {
   }
 }
 
-// The parts of models.json the extension reads; the generator checks the rest.
+// The fields from models.json used by the extension.
 const modelsConfig = Type.Object({
   available: Type.Array(Type.String()),
   efforts: Type.Array(Type.String()),

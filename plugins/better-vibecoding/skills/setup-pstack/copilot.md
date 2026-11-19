@@ -25,7 +25,7 @@ A Copilot sheet uses step 6's role lines and settings under this header in place
 ```markdown
 # Better Vibecoding model configuration
 
-Per-role model choices for Better Vibecoding skills on GitHub Copilot, written by setup-pstack. Every role keeps its line; rerun setup-pstack to change one. A value of `inherit-parent` or `auto` runs that role on the parent session's model (the `task` call omits `model`); an alias entry in a panel list still counts toward that panel's fan-out. A model may carry a reasoning effort, as in `gpt-5.5 @xhigh` (levels: low, medium, high, xhigh, max), which the `task` call passes as `reasoning_effort`. `default effort` sets the level for a value without one; `session` keeps the parent session's effort. `session hook: off` stops the SessionStart hook from injecting the poteto-mode mandate; any other value, or no line, leaves it on. `panel vendors: any` records that the user kept a panel whose models come from one vendor.
+Per-role model choices for Better Vibecoding skills on GitHub Copilot, written by setup-pstack. Every role keeps its line; rerun setup-pstack to change one. A value of `inherit-parent` or `auto` runs that role on the parent session's model (the `task` call omits `model`); an alias entry in a panel list still counts toward that panel's fan-out. A model may carry a reasoning effort, as in `<model> @<level>`, which the `task` call passes as `reasoning_effort`. `default effort` sets the level for a value without one; `session` keeps the parent session's effort. `session hook: off` stops the SessionStart hook from injecting the poteto-mode mandate; any other value, or no line, leaves it on. `panel vendors: any` records that the user kept a panel whose models come from one vendor.
 ```
 
 ## Detect models
@@ -47,12 +47,14 @@ When the detected set plus `inherit-parent` is 8 choices or fewer, skip the vend
 
 Each tier question below writes every role in its row. The panel row's roles each take the whole panel list.
 
+<!-- BEGIN GENERATED Copilot role tiers -->
 | Tier | Roles |
 | --- | --- |
 | Default | `bug-fix`, `perf-issue`, `hillclimb`, `judgment and prose`, `verifiers`, `how explorer`, `how explainer`, `why investigators`, `why synthesizer`, `reflect tooling`, `reflect judgment, divergent, synthesizer`, `swarm workers`, `thermos reviewers`, `no-comments reviewer` |
 | Strongest | `strongest judgment` |
 | Worker | `feature, refactoring` |
 | Panel | `arena runners`, `arena cross-judge pool`, `architect runners`, `interrogate reviewers` |
+<!-- END GENERATED Copilot role tiers -->
 
 ## Question sequence
 
@@ -67,7 +69,7 @@ Ask in this order. Each model question is the vendor and model pair above; every
 6. **Vendor check.** When the panel's model IDs, not counting `inherit-parent`, all come from one vendor and more than one vendor is detected, ask "The panel is single-vendor (Claude), so its cross-checks share blind spots." with `Pick the panel again` and `Keep it anyway`. Picking again returns to panel model 1. `Keep it anyway` writes the line `panel vendors: any` after the `session hook` line. When only one vendor is detected, skip this question, write `panel vendors: any`, and say in step 8 that the panel's diversity is reduced. A panel of only `inherit-parent` needs no check.
 7. **Overrides.** "Override any individual role?" with `No, write the sheet (Recommended)` first, then one choice per tier row, with the row's current value in its label, as `Strongest (<its model ID>)`. Picking a row asks which of its roles to change, then asks one model for that role as in [Choosing one model](#choosing-one-model), with its value first as `(current)`. A panel role asks its list's slots as in questions 4 through 6 instead. After each override, ask this question again, until the answer is `No, write the sheet`.
 8. **Session hook.** "Keep the session hook that routes tasks to poteto-mode?" with `On (default)` and `Off`. On a re-run, the saved value comes first as `(current)`.
-9. **Default effort.** "Default reasoning effort for Better Vibecoding subagents?" with `session (keep the parent's effort)` first, then `low`, `medium`, `high`, `xhigh`, and `max`. It writes the `default effort` line. On a re-run, the saved value comes first as `(current)`. Ask no per-role effort; a saved `@<level>` suffix on a role value stays as written.
+9. **Default effort.** "Default reasoning effort for Better Vibecoding subagents?" with `session (keep the parent's effort)` first, then the bundled [reasoning effort levels](SKILL.md#models). It writes the `default effort` line. On a re-run, the saved value comes first as `(current)`. Ask no per-role effort; a saved `@<level>` suffix on a role value stays as written.
 
 The panel from questions 4 through 6 writes every panel role, in slot order. On a re-run, the saved value for each tier question is the first role in its row, and for panel model N the Nth entry of the first panel role. A role whose saved value differs from its question's saved value keeps it, and question 6 shows it.
 

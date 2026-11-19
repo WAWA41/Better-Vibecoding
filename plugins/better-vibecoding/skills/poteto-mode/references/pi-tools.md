@@ -49,18 +49,20 @@ poteto-mode's Subagents section applies on Pi through the `agent` tool:
 
 ## Model names
 
-Skills name models by the Claude aliases in their Models sections. On Pi, pass the alias as the `agent` tool's `model`. The Better Vibecoding extension resolves it in the column of the provider the session's current model comes from, and in the `anthropic` column for any other provider:
+Skills name models by the Claude aliases in their Models sections. On Pi, pass the alias as the `agent` tool's `model`. The Better Vibecoding extension resolves it in the column of the provider the session's current model comes from, and uses the fallback provider in [models.json](../../../models.json) for any other provider.
 
+<!-- BEGIN GENERATED Pi model mappings -->
 | Alias | `anthropic` | `openai` | `openai-codex` |
 | --- | --- | --- | --- |
 | `opus` | `anthropic/claude-opus-5-5` | `openai/gpt-6.1-sol` | `openai-codex/gpt-6.1-sol` |
 | `fable` | `anthropic/claude-fable-5-1` | `openai/gpt-6-astra` | `openai-codex/gpt-6-astra` |
 | `sonnet` | `anthropic/claude-sonnet-5-5` | `openai/gpt-6.1-sol` | `openai-codex/gpt-6.1-sol` |
 | `haiku` | `anthropic/claude-haiku-5-5` | `openai/gpt-6-luna` | `openai-codex/gpt-6-luna` |
+<!-- END GENERATED Pi model mappings -->
 
 Pi warns that Anthropic bills Claude used through Pi per token, as extra usage, even on a Claude subscription. Pi shows that warning only in interactive mode, never for the `pi --mode rpc` children the `agent` tool runs.
 
-A `pi models: opus=<provider/id>, sonnet=<provider/id>` line in the Pi override sheet points each alias it names at another Pi model, whatever the session's provider. Add one when the session's provider has no column above and Pi has no credentials for `anthropic`, because each alias then resolves to an `anthropic/*` ID and the `agent` call fails with `No API key found for anthropic`. The `agent` tool also takes a full `provider/id`, passed through unchanged, and `inherit-parent`, `auto`, or no `model` runs the child on the parent's current model. Diverse-model panels (`arena`, `architect`, `interrogate`, `how` critics, `reflect`) stay diverse only while their aliases resolve to distinct models. If one model family is all you can reach, vary the reasoning effort and note in the verdict that diversity was reduced.
+A `pi models: opus=<provider/id>, sonnet=<provider/id>` line in the Pi override sheet points each alias it names at another Pi model, whatever the session's provider. Add one when the session's provider has no column above and Pi has no credentials for the fallback provider. Without credentials, the `agent` call fails with `No API key found`. The `agent` tool also takes a full `provider/id`, passed through unchanged, and `inherit-parent`, `auto`, or no `model` runs the child on the parent's current model. Diverse-model panels (`arena`, `architect`, `interrogate`, `how` critics, `reflect`) stay diverse only while their aliases resolve to distinct models. If one model family is all you can reach, vary the reasoning effort and note in the verdict that diversity was reduced.
 
 `/setup-pstack` writes the configured model list. On Pi, keep the aliases and remap them with `pi models:`.
 
