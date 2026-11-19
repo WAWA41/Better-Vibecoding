@@ -1,6 +1,6 @@
-# T3 Code delegation mapping for pstack
+# T3 Code delegation mapping for Better Vibecoding
 
-T3 Code is not a runtime of its own. A T3 thread runs on a provider's harness, such as Claude Code or Codex, and that harness's mapping still applies: the skills as written on Claude Code, [`codex-tools.md`](codex-tools.md) on Codex. T3 adds one thing, the `t3-code` MCP server, whose `delegate_task` tool starts a child agent on any provider and model the app has configured. Read this file when the session exposes `delegate_task` and a pstack skill dispatches a subagent on a model the harness's own subagent tool cannot run.
+T3 Code is not a runtime of its own. A T3 thread runs on a provider's harness, such as Claude Code or Codex, and that harness's mapping still applies: the skills as written on Claude Code, [`codex-tools.md`](codex-tools.md) on Codex. T3 adds one thing, the `t3-code` MCP server, whose `delegate_task` tool starts a child agent on any provider and model the app has configured. Read this file when the session exposes `delegate_task` and a Better Vibecoding skill dispatches a subagent on a model the harness's own subagent tool cannot run.
 
 The harness prefixes the tool names. Claude Code shows `mcp__t3-code__delegate_task`, and Codex shows `mcp__t3_code__delegate_task`. This file uses the bare names.
 
@@ -16,7 +16,7 @@ The harness's own model list is not the full list. `orchestrator_capabilities` r
 
 ## Tool actions
 
-| pstack / Claude action | T3 equivalent |
+| Better Vibecoding / Claude action | T3 equivalent |
 |------------------------|---------------|
 | Dispatch a subagent on another provider (the `Agent` tool with a `model`) | `delegate_task` with `task` (the whole prompt), `target.providerInstanceId`, and `target.model`, both copied from `orchestrator_capabilities` |
 | `run_in_background: true` | `mode: "async"`, which is the default. The call returns a `taskId` at once. Keep it. |
@@ -40,7 +40,7 @@ Retry a `delegate_task` call with the same `clientRequestId`, so a lost response
 poteto-mode's Subagents section applies. These points differ for a `delegate_task` child:
 
 - The child starts with the `task` text and nothing else. It gets no parent history, so the file-pointers rule matters more: name every file by absolute path.
-- The child may not see the pstack skills. A provider loads only what is installed for it, and a T3 child saw none of them in the session that verified this mapping. Do not tell a child to invoke a skill by name. Give it the absolute path of the file to read first: `poteto-mode/SKILL.md` for the `pstack:poteto-agent` style, `poteto-mode/references/agents/comment-sicko.md` for `pstack:comment-sicko`, and the reviewer or explorer prompt file the skill names for a panel seat.
+- The child may not see the Better Vibecoding skills. A provider loads only what is installed for it, and a T3 child saw none of them in the session that verified this mapping. Do not tell a child to invoke a skill by name. Give it the absolute path of the file to read first: `poteto-mode/SKILL.md` for the `better-vibecoding:poteto-agent` style, `poteto-mode/references/agents/comment-sicko.md` for `better-vibecoding:comment-sicko`, and the reviewer or explorer prompt file the skill names for a panel seat.
 - The child runs in the parent's working directory, on the parent's checkout and branch. `delegate_task` has no worktree option, and a child that runs `git worktree add` or `cd` does not move its T3 binding. So use `delegate_task` for seats that edit no source: panel reviewers, critics, judges, explorers, investigators, and verifiers. Keep writers (code delegates, **swarm** workers, the `orchestrate` and autopilot playbooks) on the harness's own tool, each in its own worktree. On Claude Code that is `isolation: "worktree"`. Codex's `spawn_agent` has no such field, so make the worktree first and name its path in the instructions.
 - A verifier runs the app and the tests and edits no source, so a `verifiers` value of the form `<providerInstanceId>/<model>` is a `delegate_task` call. Name the exact SHA in the `task`. The child sees no driver skill, so also give it the absolute path of the project's `verify/SKILL.md` to read first, or the commands that run the app and the tests when the project has no such skill. Where the playbook gives the verifier its own worktree, tell it to add a detached worktree at that SHA in a temporary directory outside the checkout, to run there, and to remove the worktree when it is done. Shell commands run in that directory as usual. Only T3's record of the thread stays on the parent's checkout. Writing or changing a test is a write, and it stays with a code role on the harness's own tool.
 - Nothing enforces read-only. `interactionMode: "plan"` did not stop a Codex child writing a file when this mapping was verified. Say in the `task` that the child must not change files, and check `git status` when a read-only child returns.
@@ -98,7 +98,7 @@ fast mode: off
 session hook: on
 ```
 
-The orchestrator is the thread's own model, which pstack does not choose. Set it in the T3 composer, with fast mode off there too.
+The orchestrator is the thread's own model, which Better Vibecoding does not choose. Set it in the T3 composer, with fast mode off there too.
 
 The arena and architect runners write files, so they stay on Claude models. The review panel has one seat, so it has no model diversity of its own. Its diversity comes from the reviewer being a different provider than the author. Add a second entry to `interrogate reviewers` for a second opinion.
 
@@ -116,4 +116,4 @@ Write a preset value only when `orchestrator_capabilities` lists that provider a
 | `why` | Investigators and the synthesizer only read, so either tool works. A child lists MCP servers from its own provider, not the parent's. |
 | `reflect` | The reviewers and the synthesizer only read. Give each the transcript path, because a child on another provider cannot find the parent's transcript. |
 | `swarm` | Workers write, so they stay on the harness's own tool, each in its own worktree. |
-| `no-comments` | `pstack:comment-sicko` stays on the harness's own tool, because it edits the working tree. |
+| `no-comments` | `better-vibecoding:comment-sicko` stays on the harness's own tool, because it edits the working tree. |

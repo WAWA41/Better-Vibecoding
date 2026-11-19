@@ -51,7 +51,7 @@ function MuseRoleLines([string[]] $lines) {
 switch -CaseSensitive ($Runtime) {
     'codex' {
         $sheetRoot = if ($env:CODEX_HOME) { $env:CODEX_HOME } else { Join-Path $env:USERPROFILE '.codex' }
-        $sheet = Join-Path $sheetRoot 'pstack-models.md'
+        $sheet = Join-Path $sheetRoot 'better-vibecoding-models.md'
         $context = 'session-start-context.md'
     }
     'muse' {
@@ -65,7 +65,7 @@ switch -CaseSensitive ($Runtime) {
         # Muse drops USERPROFILE from the hook environment.
         $userProfile = if ($env:USERPROFILE) { $env:USERPROFILE } else { [System.Environment]::GetFolderPath('UserProfile') }
         $sheetRoot = if ($env:XDG_CONFIG_HOME) { $env:XDG_CONFIG_HOME } else { Join-Path $userProfile '.config' }
-        $sheet = Join-Path (Join-Path $sheetRoot 'muse') 'pstack-models.md'
+        $sheet = Join-Path (Join-Path $sheetRoot 'muse') 'better-vibecoding-models.md'
         $context = 'session-start-muse.md'
     }
     default {

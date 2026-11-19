@@ -12,7 +12,7 @@ export const DEPTH_FLAG = "pstack-depth";
 // Under agentDir, holds each session's agent sessions and prompts. The worktree
 // audit scans it by this name, so a rename must reach that script too.
 export const PSTACK_STATE_DIR = "pstack";
-// Under agentDir, beside the pstack-models.md sheet, holds the user's agent
+// Under agentDir, beside the better-vibecoding-models.md sheet, holds the user's agent
 // files. Not Pi's `agents`, which other subagent extensions read with their
 // own frontmatter.
 export const USER_AGENTS_DIR = "pstack-agents";
@@ -89,7 +89,7 @@ export function parseSheet(text: string): Sheet {
 export function readSheet(agentDir: string): Sheet | undefined {
   let bytes: Buffer;
   try {
-    bytes = readFileSync(join(agentDir, "pstack-models.md"));
+    bytes = readFileSync(join(agentDir, "better-vibecoding-models.md"));
   } catch {
     // An absent or unreadable sheet leaves the defaults in place, as the session hooks do.
     return undefined;
@@ -181,7 +181,7 @@ export function checkEffort(effort: string, settings: Pick<Settings, "modelsFile
   return effort;
 }
 
-// Claude Code registers each plugin agent file as pstack:<file name>, beside
+// Claude Code registers each plugin agent file as better-vibecoding:<file name>, beside
 // the built-in general-purpose type, which has no agent file, and a user agent
 // file under its bare name. A user file only adds a type, never replaces one.
 export function loadAgentTypes(settings: Pick<Settings, "pluginRoot" | "agentDir">): Map<string, AgentDefinition> {
@@ -189,7 +189,7 @@ export function loadAgentTypes(settings: Pick<Settings, "pluginRoot" | "agentDir
   const dir = join(settings.pluginRoot, "agents");
   if (existsSync(dir)) {
     for (const file of readdirSync(dir).filter((f) => f.endsWith(".md")).sort()) {
-      const type = `pstack:${basename(file, ".md")}`;
+      const type = `better-vibecoding:${basename(file, ".md")}`;
       const path = join(dir, file);
       types.set(type, parseAgentFile(path, readFileSync(path, "utf8")));
     }

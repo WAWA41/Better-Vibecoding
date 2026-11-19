@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "name": "pstack",
-  "displayName": "pstack (Muse port)",
-  "version": "0.9.121",
-  "description": "If you want to go fast, go deep first. pstack helps you write less, but higher quality code. Rigorous agent workflows you can parallelize with confidence. Muse port of the Claude Code plugin; skills are shared, tool names resolve via skills/poteto-mode/references/muse-tools.md. Original pstack by Lauren Tan (poteto).",
+  "name": "better-vibecoding",
+  "displayName": "Better Vibecoding",
+  "version": "0.1.0",
+  "description": "Engineering workflows for feature design, debugging, review, and verification through a project's real entry points.",
   "compat": {
     "source": "native",
     "manifestDir": ".muse-plugin"
@@ -357,7 +357,7 @@
           "muse"
         ],
         "timeoutMs": 5000,
-        "statusMessage": "Loading pstack routing"
+        "statusMessage": "Loading Better Vibecoding routing"
       },
       {
         "id": "session-start-windows",
@@ -372,7 +372,7 @@
           "muse"
         ],
         "timeoutMs": 5000,
-        "statusMessage": "Loading pstack routing"
+        "statusMessage": "Loading Better Vibecoding routing"
       }
     ],
     "mcpServers": [],

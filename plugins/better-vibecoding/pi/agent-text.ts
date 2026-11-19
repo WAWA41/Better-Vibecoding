@@ -67,7 +67,7 @@ export function statusText(running: { id: string; at: string; activity?: Activit
   const latest = running.reduce((a, b) => (b.at > a.at ? b : a));
   const { tool, said } = latest.activity ?? {};
   const doing = tool?.running ? toolLine(tool) : (said ?? (tool && toolLine(tool)));
-  return `pstack: ${running.length} running${doing ? ` · ${latest.id.slice(0, 8)} ${doing}` : ""}`;
+  return `better-vibecoding: ${running.length} running${doing ? ` · ${latest.id.slice(0, 8)} ${doing}` : ""}`;
 }
 
 const shellPath = (path: string) => /^[A-Za-z0-9_./-]+$/.test(path) ? path : `'${path.replaceAll("'", "'\\''")}'`;

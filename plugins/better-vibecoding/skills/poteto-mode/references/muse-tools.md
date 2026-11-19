@@ -1,10 +1,10 @@
-# Muse tool mapping for pstack
+# Muse tool mapping for Better Vibecoding
 
-pstack skills are written in Claude Code tool language (the `Skill` tool, the `Agent` tool, `AskUserQuestion`, Claude model names). On Muse the skills are the same files, loaded from the pstack Muse plugin; only the tool names resolve differently. Read this when a pstack skill names a Claude tool, a driver or bundled skill, or a Claude model. This file is Muse-specific. Other runtimes must use their own concrete tools, model names, and configuration paths.
+Better Vibecoding skills are written in Claude Code tool language (the `Skill` tool, the `Agent` tool, `AskUserQuestion`, Claude model names). On Muse the skills are the same files, loaded from the Better Vibecoding Muse plugin; only the tool names resolve differently. Read this when a Better Vibecoding skill names a Claude tool, a driver or bundled skill, or a Claude model. This file is Muse-specific. Other runtimes must use their own concrete tools, model names, and configuration paths.
 
 ## Tool actions
 
-| pstack / Claude action | Muse equivalent |
+| Better Vibecoding / Claude action | Muse equivalent |
 |------------------------|---------------|
 | Read a file | `read_file` |
 | Create a file | `write_file` |
@@ -14,7 +14,7 @@ pstack skills are written in Claude Code tool language (the `Skill` tool, the `A
 | Search file contents / find files | `search`, otherwise `bash` (`rg`, `grep`, `find`, `ls`) |
 | Fetch a URL | `web_fetch` |
 | Search the web | `web_search` |
-| Invoke a skill (the `Skill` tool, `/command`) | `read_skill` with the plugin skill id (`plugin:pstack:poteto-mode`), then follow its body. Muse lists each user-invocable skill as `/<name>` itself. |
+| Invoke a skill (the `Skill` tool, `/command`) | `read_skill` with the plugin skill id (`plugin:better-vibecoding:poteto-mode`), then follow its body. Muse lists each user-invocable skill as `/<name>` itself. |
 | Dispatch a subagent (the `Agent`/`Task` tool) | `subagent_spawn` (one child agent with a role and objective), or a Workflow child when the step needs model control or many parallel workers |
 | Dispatch N parallel subagents in one turn | N `subagent_spawn` calls in one response, or one Workflow run fanning out over its items |
 | Wait for a subagent result | `subagent_wait`, or end the turn: finished results arrive on their own. `subagent_read_result` reads a finished result again. |
@@ -29,9 +29,9 @@ A skills-only setup (the skills without the plugin) still has every tool above, 
 
 ## Subagent policy
 
-poteto-mode's Subagents section sets Claude-specific defaults (`subagent_type: "pstack:poteto-agent"`, `run_in_background: true`). On Muse:
+poteto-mode's Subagents section sets Claude-specific defaults (`subagent_type: "better-vibecoding:poteto-agent"`, `run_in_background: true`). On Muse:
 
-- The plugin's four agent files register as agent definitions with scoped ids: `pstack/poteto-agent`, `pstack/comment-sicko`, `pstack/thermo-nuclear-review-subagent`, and `pstack/thermo-nuclear-code-quality-review-subagent`. Pass the scoped id as `subagent_spawn`'s `subagent_type`, or as a Workflow child's `agentType`. Map a skill's `pstack:poteto-agent`, and each other `pstack:<name>` dispatch, to `pstack/<name>` unchanged otherwise. `general-purpose`, or no type, runs the built-in general agent. In a skills-only setup none of these definitions exist: route an ad-hoc subagent through poteto-mode's style by telling it to read the `poteto-mode` skill in full first, and a `comment-sicko` dispatch to read the `comment-sicko` reference under `poteto-mode/references/agents/` first.
+- The plugin's four agent files register as agent definitions with scoped ids: `pstack/poteto-agent`, `pstack/comment-sicko`, `pstack/thermo-nuclear-review-subagent`, and `pstack/thermo-nuclear-code-quality-review-subagent`. Pass the scoped id as `subagent_spawn`'s `subagent_type`, or as a Workflow child's `agentType`. Map a skill's `better-vibecoding:poteto-agent`, and each other `better-vibecoding:<name>` dispatch, to `pstack/<name>` unchanged otherwise. `general-purpose`, or no type, runs the built-in general agent. In a skills-only setup none of these definitions exist: route an ad-hoc subagent through poteto-mode's style by telling it to read the `poteto-mode` skill in full first, and a `comment-sicko` dispatch to read the `comment-sicko` reference under `poteto-mode/references/agents/` first.
 - `subagent_spawn` children already run alongside your turn, so `run_in_background: true` has no separate flag. Issue the dispatch and continue; the result arrives when the child finishes.
 - `readonly: true` (reviewers, explorers, critics) has no flag. Say in the objective that the child must not change files, and review its diff anyway.
 - A role value's `@<level>`, or the `default effort` line, passes as the dispatch's effort field: `effort` on a Workflow child. `subagent_spawn` has no effort field and keeps the session's effort, so name the level it needs in the objective when the job turns on it. `session` sets nothing.
@@ -54,15 +54,15 @@ Pass a role's model where the dispatch takes one: a Workflow child's `model`, or
 
 ## Session routing hook
 
-The native pstack Muse plugin bundles a `SessionStart` hook that injects the poteto-mode mandate in Muse wording, plus the saved role lines from the Muse sheet when the sheet has any. The manifest declares it twice, as `session-start` for the shell script and `session-start-windows` for the PowerShell script, and each stands down on the OS the other owns. On a machine without `sh` or without `powershell.exe`, that hook records a failed spawn at session start and the other delivers the context. Muse runs plugin hooks only after the user approves them (`muse plugins approve pstack`), so a fresh install routes nothing until then. Both hooks read `session hook` from the Muse sheet, at the path in [setup-pstack's runtime table](../../setup-pstack/SKILL.md#other-runtimes); `session hook: off` disables injection.
+The native Better Vibecoding Muse plugin bundles a `SessionStart` hook that injects the poteto-mode mandate in Muse wording, plus the saved role lines from the Muse sheet when the sheet has any. The manifest declares it twice, as `session-start` for the shell script and `session-start-windows` for the PowerShell script, and each stands down on the OS the other owns. On a machine without `sh` or without `powershell.exe`, that hook records a failed spawn at session start and the other delivers the context. Muse runs plugin hooks only after the user approves them (`muse plugins approve better-vibecoding`), so a fresh install routes nothing until then. Both hooks read `session hook` from the Muse sheet, at the path in [setup-pstack's runtime table](../../setup-pstack/SKILL.md#other-runtimes); `session hook: off` disables injection.
 
 A skills-only installation does not include the hook. Request `poteto-mode` explicitly or add a standing instruction to `AGENTS.md` in that case.
 
-## Driver and bundled skills pstack references
+## Driver and bundled skills Better Vibecoding references
 
 The [driver policy](../SKILL.md#non-negotiables) selects the app driver. For skills and drivers named by these workflows, use these Muse equivalents:
 
-| Skill or driver named in pstack | On Muse |
+| Skill or driver named in Better Vibecoding | On Muse |
 |---------------------------------|---------|
 | `run` (drive a CLI/TUI to see a change work) | Run the app yourself via `bash` and observe the real output. |
 | Project UI driver | Drive the UI with whatever automation you have, or hand the user a concrete manual check. Do not claim done without observing the artifact. |
@@ -102,4 +102,4 @@ Affected skill entry points point here. Most skills need only the tables above. 
 
 ## Instructions file
 
-Where a pstack skill says "your instructions file", on Muse that is `AGENTS.md`, which Muse reads from the workspace (and which `muse init` scaffolds). On Claude Code it is `CLAUDE.md`.
+Where a Better Vibecoding skill says "your instructions file", on Muse that is `AGENTS.md`, which Muse reads from the workspace (and which `muse init` scaffolds). On Claude Code it is `CLAUDE.md`.

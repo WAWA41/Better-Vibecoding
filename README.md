@@ -6,29 +6,31 @@ A collection of skills and plugins for everyday development.
 
 ## Architecture and delivery rules
 
-Open this checkout in an agent that reads [AGENTS.md](AGENTS.md) and describe the task normally. The project rules use progressive disclosure. A button label edit can go straight to the rendered button for verification. When a change has wider consequences, the agent uses the matching project workflow with bundled pstack.
+Open this checkout in an agent that reads [AGENTS.md](AGENTS.md) and describe the task normally. The project rules use progressive disclosure. A button label edit can go straight to the rendered button for verification. When a change has wider consequences, the agent uses the matching project workflow with the Better Vibecoding plugin.
 
 - The [feature workflow](.agents/playbooks/feature-delivery.md) opens the [shared contract guide](.agents/references/shared-contracts.md) for changes such as migrating a saved setting. A batch of exports calls for the [batch delivery guide](.agents/references/batch-delivery.md). Both apply if the task involves both risks.
 - The [bug-fix workflow](.agents/playbooks/bug-fix-delivery.md) starts with the reproduction. If two fixes based on the same assumption fail the same check, test the assumption before another patch. Open the structural repair guidance when the confirmed cause calls for it.
 
-To adopt the integration elsewhere, merge the rules into the target project's `AGENTS.md` and copy `.agents/playbooks/`, `.agents/references/`, and `vendor/pstack/` into the same relative locations. Preserve executable file modes.
+To adopt the integration elsewhere, merge the rules into the target project's `AGENTS.md` and copy `.agents/playbooks/`, `.agents/references/`, and `plugins/better-vibecoding/` into the same relative locations. Preserve executable file modes.
 
 Run the compatibility check from the repository root after adoption or an upgrade:
 
 ```sh
-node vendor/pstack/plugins/pstack/skills/poteto-mode/scripts/check-playbooks.mjs .
+node plugins/better-vibecoding/skills/poteto-mode/scripts/check-playbooks.mjs .
 ```
 
-The checker verifies upstream step references. Validate the delivered behavior through the project's usual entry points. The [source record](vendor/pstack/UPSTREAM.md) identifies the pinned upstream revision and licenses.
+The checker verifies that project workflows reference steps in this version of the plugin. Edit the [plugin source](plugins/better-vibecoding/README.md) directly to customize it. The [origins and licenses](plugins/better-vibecoding/ORIGINS.md) identify the original authors.
 
 ### Optional native Codex plugin
 
-To expose pstack in the native skill menu on a machine without the plugin, use this repository's [marketplace](.agents/plugins/marketplace.json):
+To expose Better Vibecoding in the native skill menu on a machine without the plugin, use this repository's [marketplace](.agents/plugins/marketplace.json):
 
 ```sh
 codex plugin marketplace add WAWA41/Better-Vibecoding
-codex plugin add pstack@better-vibecoding
+codex plugin add better-vibecoding@better-vibecoding
 ```
+
+Already registered this marketplace? Run `codex plugin marketplace upgrade better-vibecoding` before installing the new plugin ID. To carry over model settings, copy `pstack-models.md` to `better-vibecoding-models.md` in the same runtime configuration directory. Update saved skill mentions to `better-vibecoding:<skill>`. If the old plugin is enabled, disable its routing hook to avoid duplicate instructions.
 
 An enabled native plugin can also inject its own routing instructions at session start, subject to the host's trust settings. Repository instructions work independently of those hooks. Tool availability, model access, and permissions depend on the host.
 

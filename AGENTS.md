@@ -8,4 +8,4 @@ Stay within the user's scope. Check the requested outcomes, including later corr
 - For a feature that changes shared interfaces, state ownership, or stored data, or delivers a batch through a shared process, use the [feature workflow](.agents/playbooks/feature-delivery.md).
 - For a defect with an unknown cause, repeated failed fixes, or other consumers likely to be affected, use the [bug-fix workflow](.agents/playbooks/bug-fix-delivery.md).
 
-When a workflow applies, use it with [bundled pstack](vendor/pstack/plugins/pstack/skills/poteto-mode/SKILL.md). Open a linked guide when its condition arises. Revisit this choice if the work reveals a wider change.
+When a workflow applies, use it with [Better Vibecoding](plugins/better-vibecoding/skills/poteto-mode/SKILL.md). Open a linked guide when its condition arises. Revisit this choice if the work reveals a wider change.

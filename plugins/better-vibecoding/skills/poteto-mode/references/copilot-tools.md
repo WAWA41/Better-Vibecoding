@@ -1,10 +1,10 @@
-# GitHub Copilot tool mapping for pstack
+# GitHub Copilot tool mapping for Better Vibecoding
 
-pstack skills are written in Claude Code tool language (the `Skill` tool, the `Agent` tool, `AskUserQuestion`, Claude model names, `${CLAUDE_CONFIG_DIR:-$HOME/.claude}/` and `~/.claude/orchestrate/` paths). On GitHub Copilot the skills are the same files; only the tool names, model IDs, and paths resolve differently. Read this when a pstack skill names a Claude tool, a driver or bundled skill, a Claude model, or a Claude Code path. It covers both the Copilot CLI and the Copilot app, which load the same plugin. This file is Copilot-specific; other runtimes use their own equivalents.
+Better Vibecoding skills are written in Claude Code tool language (the `Skill` tool, the `Agent` tool, `AskUserQuestion`, Claude model names, `${CLAUDE_CONFIG_DIR:-$HOME/.claude}/` and `~/.claude/orchestrate/` paths). On GitHub Copilot the skills are the same files; only the tool names, model IDs, and paths resolve differently. Read this when a Better Vibecoding skill names a Claude tool, a driver or bundled skill, a Claude model, or a Claude Code path. It covers both the Copilot CLI and the Copilot app, which load the same plugin. This file is Copilot-specific; other runtimes use their own equivalents.
 
 ## Tool actions
 
-| pstack / Claude action | GitHub Copilot equivalent |
+| Better Vibecoding / Claude action | GitHub Copilot equivalent |
 |------------------------|---------------------------|
 | Read a file (`Read`) | `view` |
 | Create a file | `create` |
@@ -13,7 +13,7 @@ pstack skills are written in Claude Code tool language (the `Skill` tool, the `A
 | Search file contents / find files | `grep` / `glob` |
 | Fetch a URL | `web_fetch` |
 | Search the web | `web_search` |
-| Invoke a skill (the `Skill` tool, `/command`, `pstack:<skill>`) | The `skill` tool with the bare skill name (`poteto-mode`, not `pstack:poteto-mode`). A user types `/pstack:<skill>` in the CLI prompt; on CLI 1.0.89 a bare `/<skill>` reports an unknown command for a plugin skill. Copilot's prompt lists only part of a large plugin's skills (a character budget cuts the alphabetical tail); a skill missing from that list still loads by name. |
+| Invoke a skill (the `Skill` tool, `/command`, `better-vibecoding:<skill>`) | The `skill` tool with the bare skill name (`poteto-mode`, not `better-vibecoding:poteto-mode`). A user types `/better-vibecoding:<skill>` in the CLI prompt; on CLI 1.0.89 a bare `/<skill>` reports an unknown command for a plugin skill. Copilot's prompt lists only part of a large plugin's skills (a character budget cuts the alphabetical tail); a skill missing from that list still loads by name. |
 | Dispatch a subagent (the `Agent`/`Task` tool) | The `task` tool: `agent_type`, `model`, `mode`, `name`, `prompt`. |
 | Dispatch N parallel subagents in one turn | N `task` calls in one response. |
 | Background subagent (`run_in_background: true`) | `task` with `mode: "background"`; you are notified when it finishes. |
@@ -24,12 +24,12 @@ pstack skills are written in Claude Code tool language (the `Skill` tool, the `A
 
 ## Subagent policy
 
-poteto-mode's Subagents section sets Claude-specific defaults (`subagent_type: "pstack:poteto-agent"`, `run_in_background: true`). On GitHub Copilot:
+poteto-mode's Subagents section sets Claude-specific defaults (`subagent_type: "better-vibecoding:poteto-agent"`, `run_in_background: true`). On GitHub Copilot:
 
-- The plugin's agents load as `task` agent types under their namespaced names, `pstack:poteto-agent`, `pstack:comment-sicko`, `pstack:thermo-nuclear-review-subagent`, and `pstack:thermo-nuclear-code-quality-review-subagent`. Pass the skill's `subagent_type` as `agent_type` unchanged.
-- `subagent_type: "general-purpose"` maps to `agent_type: "general-purpose"`. Where a skill leaves the type unset, use `pstack:poteto-agent`.
+- The plugin's agents load as `task` agent types under their namespaced names, `better-vibecoding:poteto-agent`, `better-vibecoding:comment-sicko`, `better-vibecoding:thermo-nuclear-review-subagent`, and `better-vibecoding:thermo-nuclear-code-quality-review-subagent`. Pass the skill's `subagent_type` as `agent_type` unchanged.
+- `subagent_type: "general-purpose"` maps to `agent_type: "general-purpose"`. Where a skill leaves the type unset, use `better-vibecoding:poteto-agent`.
 - `readonly: true` (reviewers, explorers, critics) maps to a read-only agent type: `explore` for code reading, `code-review` for diff review. When a read-only role must run commands or reach MCP tools, use `general-purpose` and tell it in the prompt not to write files; review its diff anyway.
-- `readonly: false`, or a role that needs MCP tools, maps to `general-purpose` or `pstack:poteto-agent`.
+- `readonly: false`, or a role that needs MCP tools, maps to `general-purpose` or `better-vibecoding:poteto-agent`.
 - Reasoning effort maps to `task`'s `reasoning_effort`. Pass a role value's `@<level>` suffix, or else the sheet's `default effort` level, as `reasoning_effort`; `session` omits it.
 - `run_in_background: true` maps to `mode: "background"`. `mode: "sync"` blocks your turn; use it only when the next step needs the result.
 - A model a skill states for a role (its Models section, an `Agent` call's `model`, or the user's sheet line) is an explicit model instruction, so pass it as `task`'s `model`. A role with no configured model omits `model`. See Model names below for how a Claude default resolves.
@@ -40,14 +40,14 @@ poteto-mode's Subagents section sets Claude-specific defaults (`subagent_type: "
 
 Skills name Claude Code model aliases in their Models sections. Those aliases are not Copilot model IDs, and the Copilot build ships no default model IDs: the models an account can reach depend on its plan and policy, so the user picks them once.
 
-- The model sheet is `${COPILOT_HOME:-~/.copilot}/pstack-models.md`. It sits outside the workspace, so reading it asks for path access. The plugin's SessionStart hook reads it, checks it, and adds its role lines to the session context as the user's saved pstack model choices. Take role models from that block and do not `view` the sheet. A role line names the model for that role.
-- Read the sheet only when that block and the hook's `sheet invalid` or no-sheet note are all missing, as in a skills-only install with no hook. `view`, `create`, and `edit` take literal paths and expand neither `~` nor `$COPILOT_HOME`, so print the sheet's absolute path with `bash` first (`echo "${COPILOT_HOME:-$HOME/.copilot}/pstack-models.md"`) and read and write exactly that path; do not append `.copilot` or any other segment to it. A session with its own `COPILOT_HOME` then never touches `~/.copilot`.
+- The model sheet is `${COPILOT_HOME:-~/.copilot}/better-vibecoding-models.md`. It sits outside the workspace, so reading it asks for path access. The plugin's SessionStart hook reads it, checks it, and adds its role lines to the session context as the user's saved Better Vibecoding model choices. Take role models from that block and do not `view` the sheet. A role line names the model for that role.
+- Read the sheet only when that block and the hook's `sheet invalid` or no-sheet note are all missing, as in a skills-only install with no hook. `view`, `create`, and `edit` take literal paths and expand neither `~` nor `$COPILOT_HOME`, so print the sheet's absolute path with `bash` first (`echo "${COPILOT_HOME:-$HOME/.copilot}/better-vibecoding-models.md"`) and read and write exactly that path; do not append `.copilot` or any other segment to it. A session with its own `COPILOT_HOME` then never touches `~/.copilot`.
 - No sheet, or the hook reports `sheet invalid`: before a skill that needs a role model (`architect`, `arena`, `how`, `interrogate`, `no-comments`, `poteto-mode`, `reflect`, `swarm`, `thermos`, `why`), stop, load `setup-pstack` with the `skill` tool, and finish it first. In that same session, use the values it just wrote; later sessions get them from the hook. Do not ask again on later runs.
 - A role line in the sheet is the user's explicit model instruction, so pass it as the `task` tool's `model` parameter. `inherit-parent` or `auto` omits `model`.
-- The plugin's `PreToolUse` hook enforces this for pstack agents. While the sheet is valid, it denies a `task` call whose `agent_type` starts with `pstack:` and whose `model` is not one of the sheet's values, and its reason lists the saved IDs. Retry with the role's saved model; never retry on another unsaved model. It leaves calls with no `model` and other agent types alone.
+- The plugin's `PreToolUse` hook enforces this for Better Vibecoding agents. While the sheet is valid, it denies a `task` call whose `agent_type` starts with `better-vibecoding:` and whose `model` is not one of the sheet's values, and its reason lists the saved IDs. Retry with the role's saved model; never retry on another unsaved model. It leaves calls with no `model` and other agent types alone.
 - Roles that default to the worker model (`feature, refactoring`): the worker model the user chose.
 - Roles that default to the strongest model (`strongest judgment`): the strongest model the user chose.
-- Diverse-model panels (`arena`, `architect`, `interrogate`, `how` critics, `reflect`): the adversarial signal comes from model diversity, so fill a panel from distinct vendors in the `task` tool's `model` list (Claude, GPT, Gemini, Grok, and so on). pstack ships no default Copilot panel. If only one vendor is reachable, vary reasoning effort and note in the verdict that diversity was reduced.
+- Diverse-model panels (`arena`, `architect`, `interrogate`, `how` critics, `reflect`): the adversarial signal comes from model diversity, so fill a panel from distinct vendors in the `task` tool's `model` list (Claude, GPT, Gemini, Grok, and so on). Better Vibecoding ships no default Copilot panel. If only one vendor is reachable, vary reasoning effort and note in the verdict that diversity was reduced.
 
 `setup-pstack` lists the models from the `model` enum of the `task` tool and writes only IDs it saw there. After it writes the sheet, it runs its `check-sheet.sh` script, which applies the hook's checks.
 
@@ -55,7 +55,7 @@ Run `setup-pstack`, and the parent session that orchestrates a panel, on a model
 
 ## Session routing hook
 
-The plugin's `SessionStart` hook runs on the Copilot CLI and in the Copilot app. Copilot loads the plugin through its own Copilot manifest and hook file, not the Claude Code ones. The hook prints the routing mandate as the `additionalContext` JSON Copilot injects. It reads `${COPILOT_HOME:-~/.copilot}/pstack-models.md`, which the session itself cannot read without a path-access prompt. `session hook: off` disables injection. When the sheet passes the checks `check-sheet.sh` applies, the injected context ends with one line per role, rebuilt from the checked values; no other sheet text reaches the context. When it fails them, the context says `sheet invalid` and names each problem. With no sheet, it says so. Either way it tells the session to run `setup-pstack` before the first skill that dispatches on role models. The mandate names skills as `pstack:<skill>`; on Copilot load them by bare name.
+The plugin's `SessionStart` hook runs on the Copilot CLI and in the Copilot app. Copilot loads the plugin through its own Copilot manifest and hook file, not the Claude Code ones. The hook prints the routing mandate as the `additionalContext` JSON Copilot injects. It reads `${COPILOT_HOME:-~/.copilot}/better-vibecoding-models.md`, which the session itself cannot read without a path-access prompt. `session hook: off` disables injection. When the sheet passes the checks `check-sheet.sh` applies, the injected context ends with one line per role, rebuilt from the checked values; no other sheet text reaches the context. When it fails them, the context says `sheet invalid` and names each problem. With no sheet, it says so. Either way it tells the session to run `setup-pstack` before the first skill that dispatches on role models. The mandate names skills as `better-vibecoding:<skill>`; on Copilot load them by bare name.
 
 If the mandate is missing from a session (a skills-only install, a Copilot version that drops plugin hook context, or another plugin's hook replacing it), add the standing instruction `setup-pstack` describes to `~/.copilot/copilot-instructions.md`, or request `poteto-mode` explicitly.
 
@@ -74,7 +74,7 @@ Every other call, including a script run in any other form and `grep` or `glob` 
 
 The Copilot app loads the same plugin as the CLI and adds session-level tools. Use the app primitive when it is present in your tool list; otherwise use the CLI fallback.
 
-| pstack need | Copilot app | Copilot CLI |
+| Better Vibecoding need | Copilot app | Copilot CLI |
 |-------------|-------------|-------------|
 | Isolated writer (swarm worker, stack layer, orchestrate worker) | `create_session`, one worktree session per writer | `git worktree add` per writer, then `task` workers pointed at it |
 | Recurring wake-up (`loop`, the `/loop` audit tick, babysit's cadence) | `save_session_automation` on this session | Re-run the step yourself each turn, or ask the user to re-invoke; state the cadence in the decision trail |
@@ -93,11 +93,11 @@ Claude Code keeps one directory per project under `${CLAUDE_CONFIG_DIR:-$HOME/.c
 
 In poteto-mode's playbooks, `eval` reads candidate transcripts from Copilot session state, and `session-pickup` and `worktree-cleanup` search it scoped to the workspace. `orchestrate` and `multi-phase-plan` keep their store under `${COPILOT_HOME:-~/.copilot}/orchestrate/` instead of `~/.claude/orchestrate/`.
 
-## Driver and bundled skills pstack references
+## Driver and bundled skills Better Vibecoding references
 
 The [driver policy](../SKILL.md#non-negotiables) selects the app driver. For skills and drivers named by these workflows, use these Copilot equivalents:
 
-| Skill or driver named in pstack | On GitHub Copilot |
+| Skill or driver named in Better Vibecoding | On GitHub Copilot |
 |---------------------------------|-------------------|
 | `run` (drive a CLI/TUI to see a change work) | Run the app yourself via `bash` and observe the real output. |
 | Project UI driver | Drive the UI with whatever automation you have (the app's `browser` canvas, a browser skill), or hand the user a concrete manual check. Do not claim done without observing the artifact. |
@@ -115,8 +115,8 @@ Affected skill entry points point here. Most skills need only the tables above. 
 | `architect` | The runner panel goes through the **arena** skill: one `task` per runner, each with a model from the sheet's `architect runners` line. |
 | `how` | The explorers and the explainer are `task` calls with the sheet's `how` role models; critics use a read-only agent type (see Subagent policy). |
 | `arena` | Runners and the cross-judge pool come from the sheet's panel lines; pick the cross-judge from a different vendor than the candidate it grades. |
-| `no-comments` | Dispatch `task` with `agent_type: "pstack:comment-sicko"`. |
-| `thermos` | Dispatch two `task` calls with `mode: "background"`, `agent_type: "pstack:thermo-nuclear-review-subagent"` and `agent_type: "pstack:thermo-nuclear-code-quality-review-subagent"`, each with the same diff and file contents in its prompt. |
+| `no-comments` | Dispatch `task` with `agent_type: "better-vibecoding:comment-sicko"`. |
+| `thermos` | Dispatch two `task` calls with `mode: "background"`, `agent_type: "better-vibecoding:thermo-nuclear-review-subagent"` and `agent_type: "better-vibecoding:thermo-nuclear-code-quality-review-subagent"`, each with the same diff and file contents in its prompt. |
 | `swarm` | Workers are `task` calls with `mode: "background"`, each on its own worktree; in the app, `create_session` per worker. |
 | `teach` | Running `how` and `why` in parallel maps to `task` fan-out; image generation uses whatever image tool you have, or skip it and say so. |
 | `why` | Available MCP servers appear in your tool list; there is no `mcp__` prefix convention to scan for. |
@@ -136,8 +136,8 @@ Affected skill entry points point here. Most skills need only the tables above. 
 
 ## Instructions file
 
-Where a pstack skill says "your instructions file" or `CLAUDE.md`, on Copilot that is `AGENTS.md` or `.github/copilot-instructions.md` in the repository, and `~/.copilot/copilot-instructions.md` for every repository. Copilot also reads a repository's `CLAUDE.md`. Copilot does not expand `@~/` includes in user-level instructions, so the plugin hook injects the model sheet's role lines instead, as Model names above describes.
+Where a Better Vibecoding skill says "your instructions file" or `CLAUDE.md`, on Copilot that is `AGENTS.md` or `.github/copilot-instructions.md` in the repository, and `~/.copilot/copilot-instructions.md` for every repository. Copilot also reads a repository's `CLAUDE.md`. Copilot does not expand `@~/` includes in user-level instructions, so the plugin hook injects the model sheet's role lines instead, as Model names above describes.
 
 ## Skill locations
 
-Where a pstack skill names `.claude/skills/`, on Copilot project skills live under `.github/skills/` (Copilot also reads `.claude/skills/` and `.agents/skills/`), and personal skills under `~/.copilot/skills/` or `~/.agents/skills/`.
+Where a Better Vibecoding skill names `.claude/skills/`, on Copilot project skills live under `.github/skills/` (Copilot also reads `.claude/skills/` and `.agents/skills/`), and personal skills under `~/.copilot/skills/` or `~/.agents/skills/`.

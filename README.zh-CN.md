@@ -6,20 +6,20 @@
 
 ## 架构与交付规则
 
-用支持 [AGENTS.md](AGENTS.md) 的 agent 打开本仓库，照常描述任务即可。项目规则采用渐进式披露。改一句按钮文案，可以改完直接看实际按钮。改动牵涉其他调用方或交付环节时，agent 才进入对应的项目流程，并使用仓库自带的 pstack。
+用支持 [AGENTS.md](AGENTS.md) 的 agent 打开本仓库，照常描述任务即可。项目规则采用渐进式披露。改一句按钮文案，可以改完直接看实际按钮。改动牵涉其他调用方或交付环节时，agent 才进入对应的项目流程，并使用仓库自行维护的 Better Vibecoding 插件。
 
 - [功能开发流程](.agents/playbooks/feature-delivery.md)按风险指向具体说明。比如迁移已保存的设置时，读[共享接口与数据兼容](.agents/references/shared-contracts.md)；批量导出文件时，读[批量交付验收](.agents/references/batch-delivery.md)。两种风险同时存在时，两份都适用。
 - [缺陷修复流程](.agents/playbooks/bug-fix-delivery.md)从复现开始。如果两次修复基于同一假设，又都没通过同一项检查，第三次修改前先直接检验假设。定位到的根因确实需要调整结构时，再读重构说明。
 
-在其他仓库复用时，将规则合并到目标项目的 `AGENTS.md`，把 `.agents/playbooks/`、`.agents/references/` 和 `vendor/pstack/` 按相同相对位置复制过去，保留可执行权限。
+在其他仓库复用时，将规则合并到目标项目的 `AGENTS.md`，把 `.agents/playbooks/`、`.agents/references/` 和 `plugins/better-vibecoding/` 按相同相对位置复制过去，保留可执行权限。
 
 接入或升级后，在仓库根目录运行：
 
 ```sh
-node vendor/pstack/plugins/pstack/skills/poteto-mode/scripts/check-playbooks.mjs .
+node plugins/better-vibecoding/skills/poteto-mode/scripts/check-playbooks.mjs .
 ```
 
-校验器检查项目流程与上游步骤是否匹配。实际成品仍通过项目自身的正常入口验证。固定的上游提交和许可证见[来源记录](vendor/pstack/UPSTREAM.md)。
+校验器检查项目流程引用的步骤是否存在于当前插件中。要定制流程，可直接修改[插件源码](plugins/better-vibecoding/README.md)。原作者及许可证见[来源记录](plugins/better-vibecoding/ORIGINS.md)。
 
 ### 可选：注册 Codex 原生插件
 
@@ -27,8 +27,10 @@ node vendor/pstack/plugins/pstack/skills/poteto-mode/scripts/check-playbooks.mjs
 
 ```sh
 codex plugin marketplace add WAWA41/Better-Vibecoding
-codex plugin add pstack@better-vibecoding
+codex plugin add better-vibecoding@better-vibecoding
 ```
+
+已注册过这个插件目录的用户，可先运行 `codex plugin marketplace upgrade better-vibecoding` 刷新目录，再安装新标识的插件。要沿用模型设置，可在同一配置目录把 `pstack-models.md` 复制为 `better-vibecoding-models.md`。将已有指令里的技能引用改成 `better-vibecoding:<技能名>`。两个插件同时启用时，可关闭旧插件的启动路由，避免重复注入。
 
 启用原生插件后，插件还可以在会话启动时注入自己的路由提示，具体取决于宿主的信任设置。仓库指令可独立生效，工具、模型与权限由 agent 运行环境提供。
 

@@ -1,27 +1,20 @@
-# pstack
+# Better Vibecoding
 
-Lauren Tan's [pstack](https://github.com/cursor/plugins/tree/main/pstack) is an opinionated skill stack that improves agent outcomes. This is the port for Claude Code, Codex, and other agent harnesses: the same skills, with Cursor primitives translated to each runtime's tools.
+WAWA41 maintains this plugin in `plugins/better-vibecoding/`. Edit a skill's `SKILL.md` here to change how it works. The shared workflow entry is [poteto-mode](skills/poteto-mode/SKILL.md). Its [playbooks](skills/poteto-mode/playbooks) define the steps for design, debugging, review, and delivery. An adopting project can extend those steps under `.agents/playbooks/`.
 
-Tell `poteto-mode` your goal and it invokes the workflow that fits: reproduce and root-cause a bug, sketch a design with `architect`, race candidates in `arena`, review a diff with `interrogate`, cut prose with `unslop`. It keeps code concise, simple, and verified, and it reports what it checked.
+## Install and invoke
 
-## What it contains
+```sh
+codex plugin marketplace add WAWA41/Better-Vibecoding
+codex plugin add better-vibecoding@better-vibecoding
+```
 
-- Skills: Markdown instructions the agent reads. Public ones appear as `/pstack:<name>` slash commands.
-- Agents: `pstack:poteto-agent` and `pstack:comment-sicko`.
-- A SessionStart hook that injects the poteto-mode routing mandate unless your `pstack-models.md` sheet turns it off.
-- A Pi extension that supplies the subagent, question, and wake-up tools, `/loop`, and the same routing mandate when the repository is installed as a Pi package.
-- Local scripts for watching and shipping pull requests, orchestrating multi-phase plans, and auditing worktrees.
+In Codex, select `better-vibecoding:poteto-mode` from the skill picker. For a local Claude Code session, run `claude --plugin-dir ./plugins/better-vibecoding` from the repository root and invoke `/better-vibecoding:poteto-mode`. Both use the files in this directory. The [repository README](https://github.com/WAWA41/Better-Vibecoding#architecture-and-delivery-rules) also covers using the rules directly from a checkout.
 
-## Data handling
+## Maintain the plugin
 
-pstack has no server or telemetry. Anything its skills ask your agent to read, including session transcripts, goes to your model provider. Scripts run locally, and PR tools use your GitHub CLI login.
+Edit [model defaults](models.json) here and run `node plugins/better-vibecoding/scripts/sync-model-defaults.mjs` from the repository root. After changing playbooks, run `node plugins/better-vibecoding/skills/poteto-mode/scripts/check-playbooks.mjs .` from the adopting project with the path to its copy of the plugin. When publishing a release, update `VERSION` and the native plugin manifests together.
 
-## Links
+The existing skill names, including `setup-pstack` and `poteto-mode`, remain available in the new namespace. For a migration, copy any settings you use from `pstack-models.md` to `better-vibecoding-models.md` alongside the original. Update explicit skill mentions to `better-vibecoding:<skill>`. Disable the previous plugin's routing hook if both installations are enabled. Existing Git resume checkpoints retain their storage format and location.
 
-- [Skills, slash commands, runtime setup, and model configuration](https://github.com/h00mankind/pstack/blob/main/docs/reference.md)
-- [Issues and support](https://github.com/h00mankind/pstack/issues)
-- [Security policy](https://github.com/h00mankind/pstack/blob/main/SECURITY.md)
-
-## License
-
-MIT for this port and its additions, © 2026 Michael Denyer. Original pstack © 2026 Lauren Tan; imported cursor-team-kit skills © 2026 Cursor. See [NOTICE.md](https://github.com/h00mankind/pstack/blob/main/NOTICE.md).
+The [source history and licenses](ORIGINS.md) credit the original authors.

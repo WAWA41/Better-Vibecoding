@@ -1,6 +1,6 @@
 ---
 name: poteto-help
-description: answer a question about pstack with the prompt to send and the file the answer came from
+description: answer a question about Better Vibecoding with the prompt to send and the file the answer came from
 disable-model-invocation: true
 ---
 

@@ -1,16 +1,16 @@
 {
-  "name": "pstack",
-  "version": "0.9.121",
-  "description": "If you want to go fast, go deep first. pstack helps you write less, but higher quality code. rigorous agent workflows you can parallelize with confidence. Codex port of the Claude Code plugin; skills are shared, tool names resolve via skills/poteto-mode/references/codex-tools.md. Original pstack by Lauren Tan (poteto).",
+  "name": "better-vibecoding",
+  "version": "0.1.0",
+  "description": "Engineering workflows for feature design, debugging, review, and verification through a project's real entry points.",
   "author": {
-    "name": "Michael Denyer",
-    "url": "https://github.com/michael-denyer"
+    "name": "WAWA41",
+    "url": "https://github.com/WAWA41"
   },
-  "homepage": "https://github.com/h00mankind/pstack",
-  "repository": "https://github.com/h00mankind/pstack",
+  "homepage": "https://github.com/WAWA41/Better-Vibecoding",
+  "repository": "https://github.com/WAWA41/Better-Vibecoding",
   "license": "MIT",
   "keywords": [
-    "pstack",
+    "better-vibecoding",
     "poteto-mode",
     "workflow",
     "principles",
@@ -30,10 +30,10 @@
   "skills": "./skills/",
   "hooks": "./hooks/codex-hooks.json",
   "interface": {
-    "displayName": "pstack",
+    "displayName": "Better Vibecoding",
     "shortDescription": "Rigorous, parallelizable agent workflows: go deep first, write less, verify everything",
-    "longDescription": "pstack guides agent work through poteto-mode's principles, parallel design exploration (architect/arena), adversarial multi-model review (interrogate), root-cause debugging, prose deslopping, and verified delivery. Skills are shared with the Claude Code build; on Codex, tool names resolve via the codex-tools mapping.",
-    "developerName": "Michael Denyer (port of Lauren Tan's pstack)",
+    "longDescription": "Engineering workflows for feature design, debugging, review, and verification through a project's real entry points.",
+    "developerName": "WAWA41",
     "category": "Developer Tools",
     "capabilities": [
       "Interactive",
@@ -44,7 +44,7 @@
       "Work on this in poteto-mode.",
       "Interrogate this diff with multiple models."
     ],
-    "websiteURL": "https://github.com/h00mankind/pstack",
+    "websiteURL": "https://github.com/WAWA41/Better-Vibecoding",
     "brandColor": "#7C3AED",
     "composerIcon": "./assets/pstack-icon.png",
     "logo": "./assets/pstack-icon.png"

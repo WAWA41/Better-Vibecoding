@@ -13,7 +13,7 @@ const agentParams = (types: string[]) => Type.Object(
     prompt: Type.String({ description: "The task for the agent to perform" }),
     subagent_type: Type.Optional(
       Type.String({
-        description: `Agent definition to run: ${types.map((type) => (type === GENERAL_PURPOSE ? `${type} (default)` : type)).join(", ")}. A name without the pstack: prefix, other than general-purpose, is an agent file in pstack-agents in the Pi agent directory, whose tools:, disallowedTools:, and isolation: fields are not applied.`,
+        description: `Agent definition to run: ${types.map((type) => (type === GENERAL_PURPOSE ? `${type} (default)` : type)).join(", ")}. A name without the better-vibecoding: prefix, other than general-purpose, is an agent file in pstack-agents in the Pi agent directory, whose tools:, disallowedTools:, and isolation: fields are not applied.`,
       }),
     ),
     model: Type.Optional(

@@ -29,7 +29,7 @@ export function checkPlaybooks(root, bundled = BUNDLED) {
         return { stem, text: known ? readFileSync(file, "utf8") : null };
       });
     for (const base of bases) {
-      if (base.text === null) problems.push(`${path}: extends \`${base.stem}\`, which this pstack has no playbook for`);
+      if (base.text === null) problems.push(`${path}: extends \`${base.stem}\`, which this plugin has no playbook for`);
     }
     for (const line of text.split("\n")) {
       if (CHANGE_VERB.test(line) && !CHANGE.test(line)) {
@@ -64,7 +64,7 @@ if (invokedDirectly()) {
     console.error(problems.join("\n"));
     process.exitCode = 1;
   } else if (existsSync(directory)) {
-    console.log("Every project playbook matches this pstack's playbooks.");
+    console.log("Every project playbook matches this plugin's playbooks.");
   } else {
     console.log(`No project playbooks to check: ${directory} does not exist.`);
   }

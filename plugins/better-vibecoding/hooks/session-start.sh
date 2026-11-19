@@ -5,15 +5,15 @@ set -eu
 # Literal plugin paths, so a static reader of the hooks files can follow them.
 case "${1:-}" in
   claude)
-    sheet="${CLAUDE_CONFIG_DIR:-$HOME/.claude}/pstack-models.md"
+    sheet="${CLAUDE_CONFIG_DIR:-$HOME/.claude}/better-vibecoding-models.md"
     reader="${CLAUDE_PLUGIN_ROOT}/skills/setup-pstack/scripts/read-sheet.sh"
     ;;
   codex)
-    sheet="${CODEX_HOME:-$HOME/.codex}/pstack-models.md"
+    sheet="${CODEX_HOME:-$HOME/.codex}/better-vibecoding-models.md"
     reader="${CLAUDE_PLUGIN_ROOT}/skills/setup-pstack/scripts/read-sheet.sh"
     ;;
   copilot)
-    sheet="${COPILOT_HOME:-$HOME/.copilot}/pstack-models.md"
+    sheet="${COPILOT_HOME:-$HOME/.copilot}/better-vibecoding-models.md"
     reader="${COPILOT_PLUGIN_ROOT}/skills/setup-pstack/scripts/read-sheet.sh"
     ;;
   muse)
@@ -23,7 +23,7 @@ case "${1:-}" in
       MINGW*|MSYS*|CYGWIN*|Windows_NT) exit 0 ;;
     esac
     [ "${OS:-}" != Windows_NT ] || exit 0
-    sheet="${XDG_CONFIG_HOME:-$HOME/.config}/muse/pstack-models.md"
+    sheet="${XDG_CONFIG_HOME:-$HOME/.config}/muse/better-vibecoding-models.md"
     reader="${MUSE_PLUGIN_ROOT}/skills/setup-pstack/scripts/read-sheet.sh"
     ;;
   *)

@@ -7,7 +7,7 @@
 # The default sheet is GitHub Copilot's, so setup-pstack can run this without
 # naming a path outside the workspace.
 set -eu
-sheet=${1:-${COPILOT_HOME:-$HOME/.copilot}/pstack-models.md}
+sheet=${1:-${COPILOT_HOME:-$HOME/.copilot}/better-vibecoding-models.md}
 if [ ! -f "$sheet" ] || [ ! -r "$sheet" ]; then
   echo "sheet invalid: cannot read $sheet"
   exit 1
